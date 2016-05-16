@@ -1,0 +1,6 @@
+obj/crypto/sha1.o: crypto/sha1.cpp \
+ /home/craig/projects/navcoin2/src/crypto/sha1.h \
+ /home/craig/projects/navcoin2/src/crypto/common.h
+crypto/sha1.cpp :
+ /home/craig/projects/navcoin2/src/crypto/sha1.h :
+ /home/craig/projects/navcoin2/src/crypto/common.h :
