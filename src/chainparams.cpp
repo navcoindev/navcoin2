@@ -101,6 +101,7 @@ public:
         base58Prefixes[SECRET_KEY] =     list_of(150);
         base58Prefixes[EXT_PUBLIC_KEY] = list_of(0x04)(0x88)(0xB2)(0x1E);
         base58Prefixes[EXT_SECRET_KEY] = list_of(0x04)(0x88)(0xAD)(0xE4);
+        base58Prefixes[EXT_COIN_TYPE]  = list_of(0x80000082);             // NavCoin BIP44 coin type is '82' Index "130"
 
         convertSeed6(vFixedSeeds, pnSeed6_main, ARRAYLEN(pnSeed6_main));
 
@@ -165,6 +166,7 @@ public:
         base58Prefixes[SECRET_KEY]     = list_of(150);
         base58Prefixes[EXT_PUBLIC_KEY] = list_of(0x04)(0x35)(0x87)(0xCF);
         base58Prefixes[EXT_SECRET_KEY] = list_of(0x04)(0x35)(0x83)(0x94);
+        base58Prefixes[EXT_COIN_TYPE]  = list_of(0x80000082);             // NavCoin BIP44 coin type is '82' Index "130"
 
         convertSeed6(vFixedSeeds, pnSeed6_test, ARRAYLEN(pnSeed6_test));
 
