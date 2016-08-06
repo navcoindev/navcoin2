@@ -769,7 +769,7 @@ void tradingDialog::CalculateCSReceiveLabel(){
     }
 }
 
-void tradingDialog::on_UpdateKeys_clicked(bool Save, bool Load)
+void tradingDialog::onUpdateKeys_clicked(bool Save, bool Load)
 {
   this->ApiKey    = ui->ApiKeyInput->text();
   this->SecretKey = ui->SecretKeyInput->text();
@@ -858,7 +858,7 @@ void tradingDialog::on_SaveKeys_clicked()
     }
     if (fSuccess) {
         bool Save = true;
-        on_UpdateKeys_clicked(Save);
+        onUpdateKeys_clicked(Save);
     }
 
 }
@@ -900,7 +900,7 @@ void tradingDialog::on_LoadKeys_clicked()
     if (fSuccess) {
         bool Save = false;
         bool Load = true;
-        on_UpdateKeys_clicked(Save, Load);
+        onUpdateKeys_clicked(Save, Load);
     }
 
 }
