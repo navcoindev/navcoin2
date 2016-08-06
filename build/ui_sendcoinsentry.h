@@ -1,0 +1,237 @@
+/********************************************************************************
+** Form generated from reading UI file 'sendcoinsentry.ui'
+**
+** Created by: Qt User Interface Compiler version 5.2.1
+**
+** WARNING! All changes made in this file will be lost when recompiling UI file!
+********************************************************************************/
+
+#ifndef UI_SENDCOINSENTRY_H
+#define UI_SENDCOINSENTRY_H
+
+#include <QtCore/QVariant>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QFrame>
+#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QHeaderView>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QToolButton>
+#include "bitcoinamountfield.h"
+#include "qvalidatedlineedit.h"
+
+QT_BEGIN_NAMESPACE
+
+class Ui_SendCoinsEntry
+{
+public:
+    QGridLayout *gridLayout;
+    QLabel *label;
+    QLabel *label_2;
+    BitcoinAmountField *payAmount;
+    QLabel *label_4;
+    QHBoxLayout *payToLayout;
+    QValidatedLineEdit *payTo;
+    QToolButton *addressBookButton;
+    QToolButton *pasteButton;
+    QToolButton *deleteButton;
+    QValidatedLineEdit *addAsLabel;
+
+    void setupUi(QFrame *SendCoinsEntry)
+    {
+        if (SendCoinsEntry->objectName().isEmpty())
+            SendCoinsEntry->setObjectName(QStringLiteral("SendCoinsEntry"));
+        SendCoinsEntry->resize(350, 136);
+        SendCoinsEntry->setFrameShape(QFrame::StyledPanel);
+        SendCoinsEntry->setFrameShadow(QFrame::Sunken);
+        gridLayout = new QGridLayout(SendCoinsEntry);
+        gridLayout->setSpacing(12);
+        gridLayout->setObjectName(QStringLiteral("gridLayout"));
+        label = new QLabel(SendCoinsEntry);
+        label->setObjectName(QStringLiteral("label"));
+        label->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+
+        gridLayout->addWidget(label, 5, 0, 1, 1);
+
+        label_2 = new QLabel(SendCoinsEntry);
+        label_2->setObjectName(QStringLiteral("label_2"));
+        label_2->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+
+        gridLayout->addWidget(label_2, 3, 0, 1, 1);
+
+        payAmount = new BitcoinAmountField(SendCoinsEntry);
+        payAmount->setObjectName(QStringLiteral("payAmount"));
+
+        gridLayout->addWidget(payAmount, 5, 1, 1, 1);
+
+        label_4 = new QLabel(SendCoinsEntry);
+        label_4->setObjectName(QStringLiteral("label_4"));
+        label_4->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+
+        gridLayout->addWidget(label_4, 4, 0, 1, 1);
+
+        payToLayout = new QHBoxLayout();
+        payToLayout->setSpacing(0);
+        payToLayout->setObjectName(QStringLiteral("payToLayout"));
+        payTo = new QValidatedLineEdit(SendCoinsEntry);
+        payTo->setObjectName(QStringLiteral("payTo"));
+        payTo->setMaxLength(80);
+
+        payToLayout->addWidget(payTo);
+
+        addressBookButton = new QToolButton(SendCoinsEntry);
+        addressBookButton->setObjectName(QStringLiteral("addressBookButton"));
+        addressBookButton->setStyleSheet(QLatin1String("QToolButton {\n"
+"	color: #FFFFFF; \n"
+"	font-weight:bold; \n"
+"	margin: 1px 0; \n"
+"	padding: 2px 4px; \n"
+"	background-color: #43b5eb; \n"
+"	border: 1px solid #1381b5; \n"
+"	border-radius: 5px;\n"
+"	margin-left: 5px;\n"
+"}\n"
+"\n"
+"QToolButton:hover { \n"
+"	background-color: #71c7f0; \n"
+"	border: 1px solid #43b5eb; \n"
+"}\n"
+"\n"
+"QToolButton:checked { \n"
+"	background-color: #997cc5; \n"
+"	border: 1px solid #7d59b5; \n"
+"} \n"
+"\n"
+"QToolButton:pressed { \n"
+"	background-color: #997cc5; \n"
+"	border: 1px solid #7d59b5; \n"
+"}"));
+        QIcon icon;
+        icon.addFile(QStringLiteral(":/icons/user-white"), QSize(), QIcon::Normal, QIcon::Off);
+        addressBookButton->setIcon(icon);
+
+        payToLayout->addWidget(addressBookButton);
+
+        pasteButton = new QToolButton(SendCoinsEntry);
+        pasteButton->setObjectName(QStringLiteral("pasteButton"));
+        pasteButton->setStyleSheet(QLatin1String("QToolButton {\n"
+"	color: #FFFFFF; \n"
+"	font-weight:bold; \n"
+"	margin: 1px 0; \n"
+"	padding: 2px 4px; \n"
+"	background-color: #43b5eb; \n"
+"	border: 1px solid #1381b5; \n"
+"	border-radius: 5px;\n"
+"	margin: 0 5px;\n"
+"}\n"
+"\n"
+"QToolButton:hover { \n"
+"	background-color: #71c7f0; \n"
+"	border: 1px solid #43b5eb; \n"
+"}\n"
+"\n"
+"QToolButton:checked { \n"
+"	background-color: #997cc5; \n"
+"	border: 1px solid #7d59b5; \n"
+"} \n"
+"\n"
+"QToolButton:pressed { \n"
+"	background-color: #997cc5; \n"
+"	border: 1px solid #7d59b5; \n"
+"}"));
+        QIcon icon1;
+        icon1.addFile(QStringLiteral(":/icons/paste-white"), QSize(), QIcon::Normal, QIcon::Off);
+        pasteButton->setIcon(icon1);
+
+        payToLayout->addWidget(pasteButton);
+
+        deleteButton = new QToolButton(SendCoinsEntry);
+        deleteButton->setObjectName(QStringLiteral("deleteButton"));
+        deleteButton->setStyleSheet(QLatin1String("QToolButton {\n"
+"	color: #FFFFFF; \n"
+"	font-weight:bold; \n"
+"	margin: 1px 0; \n"
+"	padding: 2px 4px; \n"
+"	background-color: #43b5eb; \n"
+"	border: 1px solid #1381b5; \n"
+"	border-radius: 5px;\n"
+"}\n"
+"\n"
+"QToolButton:hover { \n"
+"	background-color: #71c7f0; \n"
+"	border: 1px solid #43b5eb; \n"
+"}\n"
+"\n"
+"QToolButton:checked { \n"
+"	background-color: #997cc5; \n"
+"	border: 1px solid #7d59b5; \n"
+"} \n"
+"\n"
+"QToolButton:pressed { \n"
+"	background-color: #997cc5; \n"
+"	border: 1px solid #7d59b5; \n"
+"}"));
+        QIcon icon2;
+        icon2.addFile(QStringLiteral(":/icons/minus-white"), QSize(), QIcon::Normal, QIcon::Off);
+        deleteButton->setIcon(icon2);
+
+        payToLayout->addWidget(deleteButton);
+
+
+        gridLayout->addLayout(payToLayout, 3, 1, 1, 1);
+
+        addAsLabel = new QValidatedLineEdit(SendCoinsEntry);
+        addAsLabel->setObjectName(QStringLiteral("addAsLabel"));
+
+        gridLayout->addWidget(addAsLabel, 4, 1, 1, 1);
+
+#ifndef QT_NO_SHORTCUT
+        label->setBuddy(payAmount);
+        label_2->setBuddy(payTo);
+        label_4->setBuddy(addAsLabel);
+#endif // QT_NO_SHORTCUT
+
+        retranslateUi(SendCoinsEntry);
+
+        QMetaObject::connectSlotsByName(SendCoinsEntry);
+    } // setupUi
+
+    void retranslateUi(QFrame *SendCoinsEntry)
+    {
+        SendCoinsEntry->setWindowTitle(QApplication::translate("SendCoinsEntry", "Form", 0));
+        label->setText(QApplication::translate("SendCoinsEntry", "A&mount:", 0));
+        label_2->setText(QApplication::translate("SendCoinsEntry", "Pay &To:", 0));
+        label_4->setText(QApplication::translate("SendCoinsEntry", "&Label:", 0));
+#ifndef QT_NO_TOOLTIP
+        payTo->setToolTip(QApplication::translate("SendCoinsEntry", "The address to send the payment to (e.g. C8gZqgY4r2RoEdqYk3QsAqFckyf9pRHN6i)", 0));
+#endif // QT_NO_TOOLTIP
+#ifndef QT_NO_TOOLTIP
+        addressBookButton->setToolTip(QApplication::translate("SendCoinsEntry", "Choose address from address book", 0));
+#endif // QT_NO_TOOLTIP
+        addressBookButton->setText(QString());
+        addressBookButton->setShortcut(QApplication::translate("SendCoinsEntry", "Alt+A", 0));
+#ifndef QT_NO_TOOLTIP
+        pasteButton->setToolTip(QApplication::translate("SendCoinsEntry", "Paste address from clipboard", 0));
+#endif // QT_NO_TOOLTIP
+        pasteButton->setText(QString());
+        pasteButton->setShortcut(QApplication::translate("SendCoinsEntry", "Alt+P", 0));
+#ifndef QT_NO_TOOLTIP
+        deleteButton->setToolTip(QApplication::translate("SendCoinsEntry", "Remove this recipient", 0));
+#endif // QT_NO_TOOLTIP
+        deleteButton->setText(QString());
+#ifndef QT_NO_TOOLTIP
+        addAsLabel->setToolTip(QApplication::translate("SendCoinsEntry", "Enter a label for this address to add it to your address book", 0));
+#endif // QT_NO_TOOLTIP
+    } // retranslateUi
+
+};
+
+namespace Ui {
+    class SendCoinsEntry: public Ui_SendCoinsEntry {};
+} // namespace Ui
+
+QT_END_NAMESPACE
+
+#endif // UI_SENDCOINSENTRY_H
