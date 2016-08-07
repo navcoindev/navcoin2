@@ -249,9 +249,11 @@ static const CRPCCommand vRPCCommands[] =
     { "searchrawtransactions",  &searchrawtransactions,  false,     false, false },
 
 /* Anon features */
-    { "anonsend",               &anonsend,               false,     false,      true },
-    { "hub",                  &hub,                  true,      false,      false },
-    { "inode",             &inode,             true,      false,      true },
+
+    { "addincoming",            &addincoming,           false,     false,      true },
+    { "anonsend",               &anonsend,              false,     false,      true },
+    { "hub",                    &hub,                   true,      false,      false },
+    { "inode",                  &inode,                 true,      false,      true },
 
 #ifdef ENABLE_WALLET
     { "getmininginfo",          &getmininginfo,          true,      false,     false },

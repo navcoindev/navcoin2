@@ -20,7 +20,7 @@
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_tradingDialog_t {
     QByteArrayData data[91];
-    char stringdata[1593];
+    char stringdata[1592];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -56,70 +56,70 @@ QT_MOC_LITERAL(23, 368, 15),
 QT_MOC_LITERAL(24, 384, 15),
 QT_MOC_LITERAL(25, 400, 3),
 QT_MOC_LITERAL(26, 404, 3),
-QT_MOC_LITERAL(27, 408, 21),
-QT_MOC_LITERAL(28, 430, 4),
-QT_MOC_LITERAL(29, 435, 4),
-QT_MOC_LITERAL(30, 440, 19),
-QT_MOC_LITERAL(31, 460, 19),
-QT_MOC_LITERAL(32, 480, 24),
-QT_MOC_LITERAL(33, 505, 21),
-QT_MOC_LITERAL(34, 527, 25),
-QT_MOC_LITERAL(35, 553, 37),
-QT_MOC_LITERAL(36, 591, 4),
-QT_MOC_LITERAL(37, 596, 25),
-QT_MOC_LITERAL(38, 622, 30),
-QT_MOC_LITERAL(39, 653, 17),
-QT_MOC_LITERAL(40, 671, 22),
-QT_MOC_LITERAL(41, 694, 26),
-QT_MOC_LITERAL(42, 721, 38),
-QT_MOC_LITERAL(43, 760, 28),
-QT_MOC_LITERAL(44, 789, 31),
-QT_MOC_LITERAL(45, 821, 21),
-QT_MOC_LITERAL(46, 843, 23),
-QT_MOC_LITERAL(47, 867, 27),
-QT_MOC_LITERAL(48, 895, 21),
-QT_MOC_LITERAL(49, 917, 24),
-QT_MOC_LITERAL(50, 942, 30),
-QT_MOC_LITERAL(51, 973, 27),
-QT_MOC_LITERAL(52, 1001, 25),
-QT_MOC_LITERAL(53, 1027, 28),
-QT_MOC_LITERAL(54, 1056, 24),
-QT_MOC_LITERAL(55, 1081, 30),
-QT_MOC_LITERAL(56, 1112, 28),
-QT_MOC_LITERAL(57, 1141, 25),
-QT_MOC_LITERAL(58, 1167, 26),
-QT_MOC_LITERAL(59, 1194, 8),
-QT_MOC_LITERAL(60, 1203, 11),
-QT_MOC_LITERAL(61, 1215, 7),
-QT_MOC_LITERAL(62, 1223, 6),
-QT_MOC_LITERAL(63, 1230, 9),
-QT_MOC_LITERAL(64, 1240, 8),
-QT_MOC_LITERAL(65, 1249, 4),
-QT_MOC_LITERAL(66, 1254, 7),
-QT_MOC_LITERAL(67, 1262, 8),
-QT_MOC_LITERAL(68, 1271, 6),
-QT_MOC_LITERAL(69, 1278, 7),
-QT_MOC_LITERAL(70, 1286, 4),
-QT_MOC_LITERAL(71, 1291, 16),
-QT_MOC_LITERAL(72, 1308, 16),
-QT_MOC_LITERAL(73, 1325, 12),
-QT_MOC_LITERAL(74, 1338, 13),
-QT_MOC_LITERAL(75, 1352, 17),
-QT_MOC_LITERAL(76, 1370, 10),
-QT_MOC_LITERAL(77, 1381, 17),
-QT_MOC_LITERAL(78, 1399, 18),
-QT_MOC_LITERAL(79, 1418, 9),
-QT_MOC_LITERAL(80, 1428, 9),
-QT_MOC_LITERAL(81, 1438, 11),
-QT_MOC_LITERAL(82, 1450, 3),
-QT_MOC_LITERAL(83, 1454, 14),
-QT_MOC_LITERAL(84, 1469, 6),
-QT_MOC_LITERAL(85, 1476, 9),
-QT_MOC_LITERAL(86, 1486, 8),
-QT_MOC_LITERAL(87, 1495, 29),
-QT_MOC_LITERAL(88, 1525, 8),
-QT_MOC_LITERAL(89, 1534, 28),
-QT_MOC_LITERAL(90, 1563, 28)
+QT_MOC_LITERAL(27, 408, 20),
+QT_MOC_LITERAL(28, 429, 4),
+QT_MOC_LITERAL(29, 434, 4),
+QT_MOC_LITERAL(30, 439, 19),
+QT_MOC_LITERAL(31, 459, 19),
+QT_MOC_LITERAL(32, 479, 24),
+QT_MOC_LITERAL(33, 504, 21),
+QT_MOC_LITERAL(34, 526, 25),
+QT_MOC_LITERAL(35, 552, 37),
+QT_MOC_LITERAL(36, 590, 4),
+QT_MOC_LITERAL(37, 595, 25),
+QT_MOC_LITERAL(38, 621, 30),
+QT_MOC_LITERAL(39, 652, 17),
+QT_MOC_LITERAL(40, 670, 22),
+QT_MOC_LITERAL(41, 693, 26),
+QT_MOC_LITERAL(42, 720, 38),
+QT_MOC_LITERAL(43, 759, 28),
+QT_MOC_LITERAL(44, 788, 31),
+QT_MOC_LITERAL(45, 820, 21),
+QT_MOC_LITERAL(46, 842, 23),
+QT_MOC_LITERAL(47, 866, 27),
+QT_MOC_LITERAL(48, 894, 21),
+QT_MOC_LITERAL(49, 916, 24),
+QT_MOC_LITERAL(50, 941, 30),
+QT_MOC_LITERAL(51, 972, 27),
+QT_MOC_LITERAL(52, 1000, 25),
+QT_MOC_LITERAL(53, 1026, 28),
+QT_MOC_LITERAL(54, 1055, 24),
+QT_MOC_LITERAL(55, 1080, 30),
+QT_MOC_LITERAL(56, 1111, 28),
+QT_MOC_LITERAL(57, 1140, 25),
+QT_MOC_LITERAL(58, 1166, 26),
+QT_MOC_LITERAL(59, 1193, 8),
+QT_MOC_LITERAL(60, 1202, 11),
+QT_MOC_LITERAL(61, 1214, 7),
+QT_MOC_LITERAL(62, 1222, 6),
+QT_MOC_LITERAL(63, 1229, 9),
+QT_MOC_LITERAL(64, 1239, 8),
+QT_MOC_LITERAL(65, 1248, 4),
+QT_MOC_LITERAL(66, 1253, 7),
+QT_MOC_LITERAL(67, 1261, 8),
+QT_MOC_LITERAL(68, 1270, 6),
+QT_MOC_LITERAL(69, 1277, 7),
+QT_MOC_LITERAL(70, 1285, 4),
+QT_MOC_LITERAL(71, 1290, 16),
+QT_MOC_LITERAL(72, 1307, 16),
+QT_MOC_LITERAL(73, 1324, 12),
+QT_MOC_LITERAL(74, 1337, 13),
+QT_MOC_LITERAL(75, 1351, 17),
+QT_MOC_LITERAL(76, 1369, 10),
+QT_MOC_LITERAL(77, 1380, 17),
+QT_MOC_LITERAL(78, 1398, 18),
+QT_MOC_LITERAL(79, 1417, 9),
+QT_MOC_LITERAL(80, 1427, 9),
+QT_MOC_LITERAL(81, 1437, 11),
+QT_MOC_LITERAL(82, 1449, 3),
+QT_MOC_LITERAL(83, 1453, 14),
+QT_MOC_LITERAL(84, 1468, 6),
+QT_MOC_LITERAL(85, 1475, 9),
+QT_MOC_LITERAL(86, 1485, 8),
+QT_MOC_LITERAL(87, 1494, 29),
+QT_MOC_LITERAL(88, 1524, 8),
+QT_MOC_LITERAL(89, 1533, 28),
+QT_MOC_LITERAL(90, 1562, 28)
     },
     "tradingDialog\0InitTrading\0\0"
     "on_TradingTabWidget_tabBarClicked\0"
@@ -132,7 +132,7 @@ QT_MOC_LITERAL(90, 1563, 28)
     "DisplayBalance\0QLabel&\0BalanceLabel\0"
     "Available\0Pending\0Currency\0BalanceLabel2\0"
     "Response2\0ActionsOnSwitch\0CancelOrderSlot\0"
-    "row\0col\0on_UpdateKeys_clicked\0Save\0"
+    "row\0col\0onUpdateKeys_clicked\0Save\0"
     "Load\0on_LoadKeys_clicked\0on_SaveKeys_clicked\0"
     "on_GenDepositBTN_clicked\0CalculateBuyCostLabel\0"
     "on_Buy_Max_Amount_clicked\0"
@@ -330,9 +330,9 @@ void tradingDialog::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _i
         case 10: _t->DisplayBalance((*reinterpret_cast< QLabel(*)>(_a[1])),(*reinterpret_cast< QString(*)>(_a[2]))); break;
         case 11: _t->ActionsOnSwitch((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 12: _t->CancelOrderSlot((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
-        case 13: _t->on_UpdateKeys_clicked((*reinterpret_cast< bool(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
-        case 14: _t->on_UpdateKeys_clicked((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 15: _t->on_UpdateKeys_clicked(); break;
+        case 13: _t->onUpdateKeys_clicked((*reinterpret_cast< bool(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
+        case 14: _t->onUpdateKeys_clicked((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 15: _t->onUpdateKeys_clicked(); break;
         case 16: _t->on_LoadKeys_clicked(); break;
         case 17: _t->on_SaveKeys_clicked(); break;
         case 18: _t->on_GenDepositBTN_clicked(); break;

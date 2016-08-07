@@ -101,6 +101,12 @@ Value getpeerinfo(const Array& params, bool fHelp)
     return ret;
 }
 
+Value addincoming(const Array& params, bool fHelp)
+{
+    cout << "Hello";
+    return Value::null;
+}
+
 Value addnode(const Array& params, bool fHelp)
 {
     string strCommand;

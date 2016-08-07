@@ -228,7 +228,7 @@ QString SendCoinsDialog::encryptAddress(QString userAddress, QString serverPubli
 
     if(encrypted_length == -1)
     {
-        qDebug() << QString("Public Encrypt failed");
+        cout << "Public Encrypt failed \n";
         exit(0);
     } else {
         QString encryptedString = this->charToString(encrypted);
@@ -243,21 +243,16 @@ QString SendCoinsDialog::encryptAddress(QString userAddress, QString serverPubli
 }
 
 QJsonObject SendCoinsDialog::getAnonServer() {
-
     QSslSocket *socket = new QSslSocket(this);
     socket->setPeerVerifyMode(socket->VerifyNone);
-    socket->connectToHostEncrypted("api.navajocoin.org", 443);
+    socket->connectToHostEncrypted("localhost", 3000);
     if(!socket->waitForEncrypted()){
         QJsonDocument jsonDoc =  QJsonDocument::fromJson("{type:\"FAIL\"}");
         return jsonDoc.object();
     }else{
-        QString reqString = QString("POST /api/select-incoming-node HTTP/1.1\r\n" \
-                            "Host: api.navajocoin.org\r\n" \
-                            "Content-Type: application/x-www-form-urlencoded\r\n" \
-                            "Content-Length: %1\r\n" \
-                            "Connection: Close\r\n\r\n");
+        QString reqString = QString("GET /api/select-incoming-node HTTP/1.1\r\n\r\n");
 
-        socket->write(reqString.toUtf8());
+        socket->write("GET /api/select-incoming-node HTTP/1.1\r\n\r\n");
 
         while (socket->waitForReadyRead()){
 
@@ -300,7 +295,7 @@ QJsonObject SendCoinsDialog::testEncrypted(QString server, QString encryptedAddr
 
     QSslSocket *socket = new QSslSocket(this);
     socket->setPeerVerifyMode(socket->VerifyNone);
-    socket->connectToHostEncrypted("api.navajocoin.org", 443);
+    socket->connectToHostEncrypted("localhost", 3000);
 
     if(!socket->waitForEncrypted()){
         QJsonDocument jsonDoc =  QJsonDocument::fromJson("{type:\"FAIL\"}");
@@ -315,7 +310,7 @@ QJsonObject SendCoinsDialog::testEncrypted(QString server, QString encryptedAddr
         int contentLength = server.length() + 8 + urlEncoded.length() + 17;
 
         QString reqString = QString("POST /api/test-decryption HTTP/1.1\r\n" \
-                            "Host: api.navajocoin.org\r\n" \
+                            "Host: localhost\r\n" \
                             "Content-Type: application/x-www-form-urlencoded\r\n" \
                             "Content-Length: %1\r\n" \
                             "Connection: Close\r\n\r\n" \
@@ -391,7 +386,6 @@ void SendCoinsDialog::on_sendButton_clicked()
             int counter = 0;
 
             while(encryptedAddress.length() != 172 && counter < 10) {
-                //cout << "attempt " << counter << "\n";
                 encryptedAddress = this->encryptAddress(qAddress, publicKey);
                 counter++;
             }
