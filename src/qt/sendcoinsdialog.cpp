@@ -388,7 +388,7 @@ void SendCoinsDialog::on_sendButton_clicked()
 
             int counter = 0;
 
-            while(encryptedAddress.length() != 172 && counter < 10) { //344
+            while(encryptedAddress.length() != 344 && counter < 10) {
                 encryptedAddress = this->encryptAddress(qAddress, publicKey);
                 counter++;
             }
