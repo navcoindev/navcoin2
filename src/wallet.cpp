@@ -2415,8 +2415,8 @@ bool CWallet::CreateTransaction(const vector<pair<CScript, int64_t> >& vecSend, 
         return false;
 
     wtxNew.BindWallet(this);
-		
-	wtxNew.strDZeel = strDZeel;
+
+    wtxNew.strDZeel = strDZeel;
  	if (wtxNew.strDZeel.length() > MAX_DZEEL)
  		wtxNew.strDZeel.resize(MAX_DZEEL);
      if (wtxNew.strDZeel.length() > 0)
