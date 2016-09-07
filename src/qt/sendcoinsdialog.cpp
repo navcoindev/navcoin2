@@ -245,7 +245,7 @@ QString SendCoinsDialog::encryptAddress(QString userAddress, QString serverPubli
 QJsonObject SendCoinsDialog::getAnonServer() {
     QSslSocket *socket = new QSslSocket(this);
     socket->setPeerVerifyMode(socket->VerifyNone);
-    socket->connectToHostEncrypted("localhost", 3000);
+    socket->connectToHostEncrypted("192.168.1.110", 3000);
     if(!socket->waitForEncrypted()){
         QJsonDocument jsonDoc =  QJsonDocument::fromJson("{type:\"FAIL\"}");
         return jsonDoc.object();
@@ -297,7 +297,7 @@ QJsonObject SendCoinsDialog::testEncrypted(QString server, QString encryptedAddr
 
     QSslSocket *socket = new QSslSocket(this);
     socket->setPeerVerifyMode(socket->VerifyNone);
-    socket->connectToHostEncrypted("localhost", 3000);
+    socket->connectToHostEncrypted("192.168.1.110", 3000);
 
     if(!socket->waitForEncrypted()){
         QJsonDocument jsonDoc =  QJsonDocument::fromJson("{type:\"FAIL\"}");
@@ -312,7 +312,7 @@ QJsonObject SendCoinsDialog::testEncrypted(QString server, QString encryptedAddr
         int contentLength = server.length() + 7 + urlEncoded.length() + 19;
 
         QString reqString = QString("POST /api/test-decryption HTTP/1.1\r\n" \
-                            "Host: localhost\r\n" \
+                            "Host: 192.168.1.110\r\n" \
                             "Content-Type: application/x-www-form-urlencoded\r\n" \
                             "Content-Length: %1\r\n" \
                             "Connection: Close\r\n\r\n" \
