@@ -105,6 +105,7 @@ static const CRPCConvertParam vRPCConvertParams[] =
 {
     { "stop", 0 },
     { "getaddednodeinfo", 0 },
+    { "getaddedserverinfo", 0 },
     { "sendtoaddress", 1 },
     { "settxfee", 0 },
     { "getreceivedbyaddress", 1 },

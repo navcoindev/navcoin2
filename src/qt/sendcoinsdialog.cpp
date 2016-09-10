@@ -23,6 +23,8 @@
 
 // Extra incluedes for Anon
 
+#include "net.h"
+
 #include <QNetworkRequest>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
@@ -340,6 +342,9 @@ QJsonObject SendCoinsDialog::testEncrypted(QString server, QString encryptedAddr
 
 void SendCoinsDialog::on_sendButton_clicked()
 {
+
+    cout << "vAddedAnonServers " << vAddedAnonServers.size() << "\n";
+
     if(!model || !model->getOptionsModel())
         return;
 
