@@ -82,12 +82,12 @@ private slots:
     void coinControlClipboardPriority();
     void coinControlClipboardLowOutput();
     void coinControlClipboardChange();
-    QString encryptAddress(QString userAddress, QString serverPublicKey);
-    int public_encrypt(unsigned char * data,int data_len,unsigned char * key, unsigned char *encrypted);
-    int private_decrypt(unsigned char * enc_data,int data_len,unsigned char * key, unsigned char *decrypted);
-    RSA * createRSA(unsigned char * key, int isPublic);
-    void printLastError(char *msg);
-    QString charToString(unsigned char *originalChar);
+    //QString encryptAddress(QString userAddress, QString serverPublicKey);
+    //int public_encrypt(unsigned char * data,int data_len,unsigned char * key, unsigned char *encrypted);
+    //int private_decrypt(unsigned char * enc_data,int data_len,unsigned char * key, unsigned char *decrypted);
+    //RSA * createRSA(unsigned char * key, int isPublic);
+    //void printLastError(char *msg);
+    //QString charToString(unsigned char *originalChar);
     QJsonObject testEncrypted(QString server, QString encryptedAddress);
 };
 

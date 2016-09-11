@@ -147,100 +147,100 @@ SendCoinsDialog::~SendCoinsDialog()
     delete ui;
 }
 
-RSA * SendCoinsDialog::createRSA(unsigned char * key,int isPublic)
-{
-    RSA *rsa= NULL;
-    BIO *keybio ;
-    keybio = BIO_new_mem_buf(key, -1);
-    if (keybio==NULL)
-    {
-        //printf( "Failed to create key BIO");
-        return 0;
-    }
-    if(isPublic)
-    {
-        rsa = PEM_read_bio_RSA_PUBKEY(keybio, &rsa,NULL, NULL);
-    }
-    else
-    {
-        rsa = PEM_read_bio_RSAPrivateKey(keybio, &rsa,NULL, NULL);
-    }
-    if(rsa == NULL)
-    {
-        //printf( "Failed to create RSA");
-    }
+//RSA * SendCoinsDialog::createRSA(unsigned char * key,int isPublic)
+//{
+//    RSA *rsa= NULL;
+//    BIO *keybio ;
+//    keybio = BIO_new_mem_buf(key, -1);
+//    if (keybio==NULL)
+//    {
+//        //printf( "Failed to create key BIO");
+//        return 0;
+//    }
+//    if(isPublic)
+//    {
+//        rsa = PEM_read_bio_RSA_PUBKEY(keybio, &rsa,NULL, NULL);
+//    }
+//    else
+//    {
+//        rsa = PEM_read_bio_RSAPrivateKey(keybio, &rsa,NULL, NULL);
+//    }
+//    if(rsa == NULL)
+//    {
+//        //printf( "Failed to create RSA");
+//    }
 
-    return rsa;
-}
+//    return rsa;
+//}
 
-void SendCoinsDialog::printLastError(char *msg)
-{
-    char * err = malloc(130);;
-    ERR_load_crypto_strings();
-    ERR_error_string(ERR_get_error(), err);
-    qDebug() << QString("%1 ERROR: %2\n").arg(msg).arg(err);
-    free(err);
-}
+//void SendCoinsDialog::printLastError(char *msg)
+//{
+//    char * err = malloc(130);;
+//    ERR_load_crypto_strings();
+//    ERR_error_string(ERR_get_error(), err);
+//    qDebug() << QString("%1 ERROR: %2\n").arg(msg).arg(err);
+//    free(err);
+//}
 
 
-int SendCoinsDialog::public_encrypt(unsigned char * data,int data_len,unsigned char * key, unsigned char *encrypted)
-{
-    RSA * rsa = this->createRSA(key,1);
-    int result = RSA_public_encrypt(data_len,data,encrypted,rsa,padding);
-    return result;
-}
+//int SendCoinsDialog::public_encrypt(unsigned char * data,int data_len,unsigned char * key, unsigned char *encrypted)
+//{
+//    RSA * rsa = this->createRSA(key,1);
+//    int result = RSA_public_encrypt(data_len,data,encrypted,rsa,padding);
+//    return result;
+//}
 
-int SendCoinsDialog::private_decrypt(unsigned char * enc_data,int data_len,unsigned char * key, unsigned char *decrypted)
-{
-    RSA * rsa = createRSA(key,0);
-    int  result = RSA_private_decrypt(data_len,enc_data,decrypted,rsa,padding);
-    return result;
-}
+//int SendCoinsDialog::private_decrypt(unsigned char * enc_data,int data_len,unsigned char * key, unsigned char *decrypted)
+//{
+//    RSA * rsa = createRSA(key,0);
+//    int  result = RSA_private_decrypt(data_len,enc_data,decrypted,rsa,padding);
+//    return result;
+//}
 
-QString SendCoinsDialog::charToString(unsigned char *originalChar){
+//QString SendCoinsDialog::charToString(unsigned char *originalChar){
 
-    QString temp;
-    QString convertedString = "";
-    int charLength = strlen(originalChar);
+//    QString temp;
+//    QString convertedString = "";
+//    int charLength = strlen(originalChar);
 
-    for(int i = 0; i < charLength; i++) {
-        temp = QChar(originalChar[i]).toAscii();
-        convertedString.append(temp);
-    }
+//    for(int i = 0; i < charLength; i++) {
+//        temp = QChar(originalChar[i]).toAscii();
+//        convertedString.append(temp);
+//    }
 
-    return convertedString;
+//    return convertedString;
 
-}
+//}
 
-QString SendCoinsDialog::encryptAddress(QString userAddress, QString serverPublicKey) {
+//QString SendCoinsDialog::encryptAddress(QString userAddress, QString serverPublicKey) {
 
-    char publicKey[serverPublicKey.size()+1];
-    memcpy( publicKey, serverPublicKey.toStdString().c_str() ,serverPublicKey.size());
-    publicKey[serverPublicKey.size()] = 0;
+//    char publicKey[serverPublicKey.size()+1];
+//    memcpy( publicKey, serverPublicKey.toStdString().c_str() ,serverPublicKey.size());
+//    publicKey[serverPublicKey.size()] = 0;
 
-    char plainText[userAddress.size()+1];
-    memcpy( plainText, userAddress.toStdString().c_str() ,userAddress.size());
-    plainText[userAddress.size()] = 0;
+//    char plainText[userAddress.size()+1];
+//    memcpy( plainText, userAddress.toStdString().c_str() ,userAddress.size());
+//    plainText[userAddress.size()] = 0;
 
-    unsigned char  encrypted[4098]={};
+//    unsigned char  encrypted[4098]={};
 
-    int encrypted_length= this->public_encrypt(plainText,strlen(plainText),publicKey,encrypted);
+//    int encrypted_length= this->public_encrypt(plainText,strlen(plainText),publicKey,encrypted);
 
-    if(encrypted_length == -1)
-    {
-        qDebug() << QString("Public Encrypt failed");
-        exit(0);
-    } else {
-        QString encryptedString = this->charToString(encrypted);
-    }
+//    if(encrypted_length == -1)
+//    {
+//        qDebug() << QString("Public Encrypt failed");
+//        exit(0);
+//    } else {
+//        QString encryptedString = this->charToString(encrypted);
+//    }
 
-    QByteArray convertedString = QByteArray(encrypted);
+//    QByteArray convertedString = QByteArray(encrypted);
 
-    QString encryptedString = convertedString.toBase64();
+//    QString encryptedString = convertedString.toBase64();
 
-    return QString(encryptedString);
+//    return QString(encryptedString);
 
-}
+//}
 
 QJsonObject SendCoinsDialog::getAnonServer() {
 
@@ -380,39 +380,43 @@ void SendCoinsDialog::on_sendButton_clicked()
     if(ui->anonSend->checkState() == 0) {
         model->setAnonSend(false);
     } else {
-        model->setAnonSend(true);
-        QJsonObject anonServer = this->getAnonServer();
+        QMessageBox::warning(this, tr("Anonymous Transaction"),
+        tr("Unable to locate an Anonymous Transaction Server, please try again later."),
+        QMessageBox::Ok, QMessageBox::Ok);
+        return;
+//        model->setAnonSend(true);
+//        QJsonObject anonServer = this->getAnonServer();
 
-        QString type = anonServer["type"].toString();
+//        QString type = anonServer["type"].toString();
 
-        if(type == "SUCCESS") {
-            QString publicKey = anonServer["public_key"].toString();
+//        if(type == "SUCCESS") {
+//            QString publicKey = anonServer["public_key"].toString();
 
-            int counter = 0;
+//            int counter = 0;
 
-            while(encryptedAddress.length() != 172 && counter < 10) {
-                //cout << "attempt " << counter << "\n";
-                encryptedAddress = this->encryptAddress(qAddress, publicKey);
-                counter++;
-            }
+//            while(encryptedAddress.length() != 172 && counter < 10) {
+//                //cout << "attempt " << counter << "\n";
+//                encryptedAddress = this->encryptAddress(qAddress, publicKey);
+//                counter++;
+//            }
 
-            QJsonObject decryptResponse = this->testEncrypted(anonServer["server"].toString(), encryptedAddress);
+//            QJsonObject decryptResponse = this->testEncrypted(anonServer["server"].toString(), encryptedAddress);
 
-            QString testType = decryptResponse["type"].toString();
+//            QString testType = decryptResponse["type"].toString();
 
-            if(testType != "SUCCESS") {
-                QMessageBox::warning(this, tr("Anonymous Transaction"),
-                tr("Failed to encrypt the address, please try again"),
-                QMessageBox::Ok, QMessageBox::Ok);
-                return;
-            }
+//            if(testType != "SUCCESS") {
+//                QMessageBox::warning(this, tr("Anonymous Transaction"),
+//                tr("Failed to encrypt the address, please try again"),
+//                QMessageBox::Ok, QMessageBox::Ok);
+//                return;
+//            }
 
-        } else {
-            QMessageBox::warning(this, tr("Anonymous Transaction"),
-            tr("Unable to locate an Anonymous Transaction Server, please try again later."),
-            QMessageBox::Ok, QMessageBox::Ok);
-            return;
-        }
+//        } else {
+//            QMessageBox::warning(this, tr("Anonymous Transaction"),
+//            tr("Unable to locate an Anonymous Transaction Server, please try again later."),
+//            QMessageBox::Ok, QMessageBox::Ok);
+//            return;
+//        }
 
     }
 
