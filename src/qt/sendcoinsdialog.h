@@ -28,6 +28,12 @@ QT_BEGIN_NAMESPACE
 class QUrl;
 QT_END_NAMESPACE
 
+struct anonServer {
+    QString address;
+    int port;
+};
+
+
 /** Dialog for sending bitcoins */
 class SendCoinsDialog : public QDialog
 {
@@ -64,6 +70,8 @@ private:
 protected:
     //void sendCoins(QString address);
     QJsonObject getAnonServer();
+    std::vector<anonServer> getAnonServers();
+    QJsonObject findAnonServer(std::vector<anonServer>);
 
 private slots:
     void on_sendButton_clicked();
@@ -88,7 +96,7 @@ private slots:
     RSA * createRSA(unsigned char * key, int isPublic);
     void printLastError(char *msg);
     QString charToString(unsigned char *originalChar);
-    QJsonObject testEncrypted(QString server, QString encryptedAddress);
+    QJsonObject testEncrypted(QString server, int port, QString encryptedAddress);
 };
 
 #endif // SENDCOINSDIALOG_H

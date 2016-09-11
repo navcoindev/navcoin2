@@ -24,6 +24,7 @@
 // Extra incluedes for Anon
 
 #include "net.h"
+#include "util.h"
 
 #include <QNetworkRequest>
 #include <QNetworkAccessManager>
@@ -35,6 +36,7 @@
 #include <QTableWidgetItem>
 #include <QtGui>
 #include <QDebug>
+#include <QHostAddress>
 
 #include <algorithm>
 #include <iterator>
@@ -244,17 +246,84 @@ QString SendCoinsDialog::encryptAddress(QString userAddress, QString serverPubli
 
 }
 
-QJsonObject SendCoinsDialog::getAnonServer() {
-    QSslSocket *socket = new QSslSocket(this);
-    socket->setPeerVerifyMode(socket->VerifyNone);
-    socket->connectToHostEncrypted("192.168.1.110", 3000);
-    if(!socket->waitForEncrypted()){
+std::vector<anonServer> SendCoinsDialog::getAnonServers() {
+    std::vector<anonServer> returnServers;
+
+    if (vAddedAnonServers.size() < 1 && mapMultiArgs["-addanonserver"].size() < 1) {
+        QMessageBox::warning(this, tr("Anonymous Transaction"),
+        tr("You must have at least one anonymouns server added to your conf file or by rpc command"),
+        QMessageBox::Ok, QMessageBox::Ok);
+        return returnServers;
+    }
+
+    const vector<string>& anonServers = {};
+
+    const vector<string>& confAnonServers = mapMultiArgs["-addanonserver"];
+
+    BOOST_FOREACH(string confAnonServer, confAnonServers) {
+        anonServers.push_back(confAnonServer);
+    }
+
+    BOOST_FOREACH(string vAddedAnonServer, vAddedAnonServers) {
+        anonServers.push_back(vAddedAnonServer);
+    }
+
+    BOOST_FOREACH(string currentServer, anonServers) {
+        anonServer tempServer;
+        QString serverToSplit = QString::fromUtf8(currentServer.c_str());
+        QStringList pieces = serverToSplit.split( ":" );
+        if (pieces.size() == 1) {
+            tempServer.address = pieces[0];
+            tempServer.port = 443;
+        } else {
+            tempServer.address = pieces[0];
+            tempServer.port = pieces[1].toInt();
+        }
+
+        QHostAddress ipAddress;
+        if(ipAddress.setAddress(tempServer.address) && tempServer.port > 0) {
+            returnServers.push_back(tempServer);
+        }
+    }
+
+    if (returnServers.size() < 1) {
+        QMessageBox::warning(this, tr("Anonymous Transaction"),
+        tr("The anon servers you have added are invalid"),
+        QMessageBox::Ok, QMessageBox::Ok);
+        return returnServers;
+    }
+
+    return returnServers;
+}
+
+QJsonObject SendCoinsDialog::findAnonServer(std::vector<anonServer> anonServers) {
+
+    if (anonServers.size() < 1) {
         QJsonDocument jsonDoc =  QJsonDocument::fromJson("{type:\"FAIL\"}");
         return jsonDoc.object();
-    }else{
-        QString reqString = QString("GET /api/select-incoming-node HTTP/1.1\r\n\r\n");
+    }
 
-        socket->write("GET /api/select-incoming-node HTTP/1.1\r\n\r\n");
+    int randIndex = rand() % anonServers.size();
+
+    QString ipAddress = anonServers[randIndex].address;
+    int port = anonServers[randIndex].port;
+
+    QSslSocket *socket = new QSslSocket(this);
+    socket->setPeerVerifyMode(socket->VerifyNone);
+    socket->connectToHostEncrypted(ipAddress, port);
+
+    if(!socket->waitForEncrypted()){
+        anonServers.erase(anonServers.begin()+randIndex);
+        return this->findAnonServer(anonServers);
+    }else{
+        QString reqString = QString("POST /api/check-node HTTP/1.1\r\n" \
+                            "Host: %1\r\n" \
+                            "Content-Type: application/x-www-form-urlencoded\r\n" \
+                            "Content-Length: 19\r\n" \
+                            "Connection: Close\r\n\r\n" \
+                            "num_nav_addresses=1\r\n").arg(ipAddress);
+
+        socket->write(reqString.toUtf8());
 
         while (socket->waitForReadyRead()){
 
@@ -267,9 +336,13 @@ QJsonObject SendCoinsDialog::getAnonServer() {
 
             QJsonDocument jsonDoc =  QJsonDocument::fromJson(rawReply.toUtf8());
             QJsonObject jsonObject = jsonDoc.object();
+
             QString type = jsonObject["type"].toString();
 
-            if(type == "SUCCESS"){
+            if (type != "SUCCESS") {
+                anonServers.erase(anonServers.begin()+randIndex);
+                return this->findAnonServer(anonServers);
+            } else {
                 QJsonObject jsonData = jsonObject["data"].toObject();
                 QJsonArray addressArray = jsonData["nav_addresses"].toArray();
                 QString serverAddress = addressArray[0].toString();
@@ -285,21 +358,23 @@ QJsonObject SendCoinsDialog::getAnonServer() {
                 if(reply == QMessageBox::Yes){
                     model->setAnonDetails(minAmount, maxAmount, serverAddress);
                     return jsonObject;
+                } else {
+                    QJsonDocument jsonDoc =  QJsonDocument::fromJson("{type:\"FAIL\"}");
+                    return jsonDoc.object();
                 }
-
             }
         }
     }
-
     QJsonDocument jsonDoc =  QJsonDocument::fromJson("{type:\"FAIL\"}");
     return jsonDoc.object();
+
 }
 
-QJsonObject SendCoinsDialog::testEncrypted(QString server, QString encryptedAddress) {
+QJsonObject SendCoinsDialog::testEncrypted(QString server, int port, QString encryptedAddress) {
 
     QSslSocket *socket = new QSslSocket(this);
     socket->setPeerVerifyMode(socket->VerifyNone);
-    socket->connectToHostEncrypted("192.168.1.110", 3000);
+    socket->connectToHostEncrypted(server, port);
 
     if(!socket->waitForEncrypted()){
         QJsonDocument jsonDoc =  QJsonDocument::fromJson("{type:\"FAIL\"}");
@@ -311,14 +386,14 @@ QJsonObject SendCoinsDialog::testEncrypted(QString server, QString encryptedAddr
 
         QString urlEncodedQString = QString(urlEncoded);
 
-        int contentLength = server.length() + 7 + urlEncoded.length() + 19;
+        int contentLength = urlEncoded.length() + 18;
 
         QString reqString = QString("POST /api/test-decryption HTTP/1.1\r\n" \
-                            "Host: 192.168.1.110\r\n" \
+                            "Host: %1\r\n" \
                             "Content-Type: application/x-www-form-urlencoded\r\n" \
-                            "Content-Length: %1\r\n" \
+                            "Content-Length: %2\r\n" \
                             "Connection: Close\r\n\r\n" \
-                            "server=%2&encrypted_address=%3\r\n").arg(contentLength).arg(server).arg(urlEncodedQString);
+                            "encrypted_address=%3\r\n").arg(server).arg(contentLength).arg(urlEncodedQString);
 
         socket->write(reqString.toUtf8());
 
@@ -342,8 +417,6 @@ QJsonObject SendCoinsDialog::testEncrypted(QString server, QString encryptedAddr
 
 void SendCoinsDialog::on_sendButton_clicked()
 {
-
-    cout << "vAddedAnonServers " << vAddedAnonServers.size() << "\n";
 
     if(!model || !model->getOptionsModel())
         return;
@@ -383,9 +456,18 @@ void SendCoinsDialog::on_sendButton_clicked()
         model->setAnonSend(false);
     } else {
         model->setAnonSend(true);
-        QJsonObject response = this->getAnonServer();
+        vector<anonServer> anonServers = this->getAnonServers();
+
+        QJsonObject response = this->findAnonServer(anonServers);
 
         QString type = response["type"].toString();
+
+        if (type != "SUCCESS") {
+            QMessageBox::warning(this, tr("Anonymous Transaction"),
+            tr("Unable to locate an Anonymous Transaction Server, please try again later."),
+            QMessageBox::Ok, QMessageBox::Ok);
+            return;
+        }
 
         if(type == "SUCCESS") {
             QJsonObject jsonData = response["data"].toObject();
@@ -398,7 +480,7 @@ void SendCoinsDialog::on_sendButton_clicked()
                 counter++;
             }
 
-            QJsonObject decryptResponse = this->testEncrypted(jsonData["server"].toString(), encryptedAddress); //@TODO jsonData["server_port"].toInt()
+            QJsonObject decryptResponse = this->testEncrypted(jsonData["server"].toString(), jsonData["server_port"].toInt(), encryptedAddress);
 
             QString testType = decryptResponse["type"].toString();
 
