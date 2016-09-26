@@ -319,9 +319,9 @@ QJsonObject SendCoinsDialog::findAnonServer(std::vector<anonServer> anonServers)
         QString reqString = QString("POST /api/check-node HTTP/1.1\r\n" \
                             "Host: %1\r\n" \
                             "Content-Type: application/x-www-form-urlencoded\r\n" \
-                            "Content-Length: 19\r\n" \
+                            "Content-Length: 15\r\n" \
                             "Connection: Close\r\n\r\n" \
-                            "num_nav_addresses=1\r\n").arg(ipAddress);
+                            "num_addresses=1\r\n").arg(ipAddress);
 
         socket->write(reqString.toUtf8());
 
@@ -386,14 +386,14 @@ QJsonObject SendCoinsDialog::testEncrypted(QString server, int port, QString enc
 
         QString urlEncodedQString = QString(urlEncoded);
 
-        int contentLength = urlEncoded.length() + 18;
+        int contentLength = urlEncoded.length() + 15;
 
         QString reqString = QString("POST /api/test-decryption HTTP/1.1\r\n" \
                             "Host: %1\r\n" \
                             "Content-Type: application/x-www-form-urlencoded\r\n" \
                             "Content-Length: %2\r\n" \
                             "Connection: Close\r\n\r\n" \
-                            "encrypted_address=%3\r\n").arg(server).arg(contentLength).arg(urlEncodedQString);
+                            "encrypted_data=%3\r\n").arg(server).arg(contentLength).arg(urlEncodedQString);
 
         socket->write(reqString.toUtf8());
 
@@ -475,7 +475,7 @@ void SendCoinsDialog::on_sendButton_clicked()
 
             int counter = 0;
 
-            while(encryptedAddress.length() != 344 && counter < 10) {
+            while(encryptedAddress.length() != 172 && counter < 10) {
                 encryptedAddress = this->encryptAddress(qAddress, publicKey);
                 counter++;
             }
