@@ -6,24 +6,24 @@ http://www.navcoin.org
 
 ## Coin Specifications
 
-|Specification|Value|
-|:-----------|
-|Block Spacing| `30 seconds`|
-|Stake Minimum Age| `30 seconds`|
-|Stake Maximum Age| `30 seconds`|
-|Stake Maximum Age| `30 seconds`|
-|Port| `44440` |
-|RPC Port| `44444` |
+| Specification | Value |
+|:-----------|:-----------|
+| Block Spacing | `30 seconds` |
+| Stake Minimum Age | `30 seconds` |
+| Stake Maximum Age | `30 seconds` |
+| Stake Maximum Age | `30 seconds` |
+| Port | `44440` |
+| RPC Port | `44444` |
 
 ## Social Channels
 
-|Site| link|
-|:-----------|
-|Bitcointalk| https://bitcointalk.org/index.php?topic=679791 |
-|Facebook| https://www.facebook.com/NAVCoin |
-|Twitter| https://twitter.com/NavCoin |
-|Reddit| http://www.reddit.com/r/navcoin |
-|Slack| https://navcoin.slack.com |
+| Site | link |
+|:-----------|:-----------|
+| Bitcointalk | https://bitcointalk.org/index.php?topic=679791 |
+| Facebook | https://www.facebook.com/NAVCoin |
+| Twitter | https://twitter.com/NavCoin |
+| Reddit | http://www.reddit.com/r/navcoin |
+| Slack | https://navcoin.slack.com |
 
 ## Navtech Decentralization
 
