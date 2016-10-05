@@ -3,3 +3,4 @@ src/obj/
 navcoin-qt
 src/navcoind
 src/secp.zip
+build/

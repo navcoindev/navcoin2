@@ -226,6 +226,8 @@ static const CRPCCommand vRPCCommands[] =
     { "getpeerinfo",            &getpeerinfo,            true,      false,     false },
     { "addnode",                &addnode,                true,      true,      false },
     { "getaddednodeinfo",       &getaddednodeinfo,       true,      true,      false },
+    { "addanonserver",          &addanonserver,          true,      true,      false },
+    { "getaddedanonserverinfo", &getaddedanonserverinfo, true,      true,      false },
     { "ping",                   &ping,                   true,      false,     false },
     { "getnettotals",           &getnettotals,           true,      true,      false },
     { "getdifficulty",          &getdifficulty,          true,      false,     false },
@@ -249,9 +251,11 @@ static const CRPCCommand vRPCCommands[] =
     { "searchrawtransactions",  &searchrawtransactions,  false,     false, false },
 
 /* Anon features */
-    { "anonsend",               &anonsend,               false,     false,      true },
-    { "hub",                  &hub,                  true,      false,      false },
-    { "inode",             &inode,             true,      false,      true },
+
+    { "addincoming",            &addincoming,           false,     false,      true },
+    { "anonsend",               &anonsend,              false,     false,      true },
+    { "hub",                    &hub,                   true,      false,      false },
+    { "inode",                  &inode,                 true,      false,      true },
 
 #ifdef ENABLE_WALLET
     { "getmininginfo",          &getmininginfo,          true,      false,     false },

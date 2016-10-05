@@ -115,6 +115,9 @@ extern std::map<CInv, int64_t> mapAlreadyAskedFor;
 extern std::vector<std::string> vAddedNodes;
 extern CCriticalSection cs_vAddedNodes;
 
+extern std::vector<std::string> vAddedAnonServers;
+extern CCriticalSection cs_vAddedAnonServers;
+
 extern NodeId nLastNodeId;
 extern CCriticalSection cs_nLastNodeId;
 

@@ -409,7 +409,7 @@ public:
             vin.size(),
             vout.size(),
             nLockTime,
-			strDZeel.substr(0,30).c_str()
+            strDZeel.substr(0,30).c_str()
 			);
         for (unsigned int i = 0; i < vin.size(); i++)
             str += "    " + vin[i].ToString() + "\n";
