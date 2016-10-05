@@ -11,6 +11,7 @@ http://www.navcoin.org
 | Block Spacing | `30 seconds` |
 | Stake Minimum Age | `2 hours` |
 | Stake Maximum Age | `24 hours` |
+| Stake Reward | `5% per annum` |
 | Port | `44440` |
 | RPC Port | `44444` |
 
