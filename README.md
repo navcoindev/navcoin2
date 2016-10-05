@@ -9,9 +9,8 @@ http://www.navcoin.org
 | Specification | Value |
 |:-----------|:-----------|
 | Block Spacing | `30 seconds` |
-| Stake Minimum Age | `30 seconds` |
-| Stake Maximum Age | `30 seconds` |
-| Stake Maximum Age | `30 seconds` |
+| Stake Minimum Age | `2 hours` |
+| Stake Maximum Age | `24 hours` |
 | Port | `44440` |
 | RPC Port | `44444` |
 
