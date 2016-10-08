@@ -1100,17 +1100,13 @@ void MapPort(bool)
 // The first name is used as information source for addrman.
 // The second name should resolve to a list of seed addresses.
 static const char *strDNSSeed[][2] = {
-    {"summercoinv2.no-ip.biz", "summercoinv2.no-ip.biz"},
-	{"navsupernode1.no-ip.biz", "summercoinv2.no-ip.biz"},
-	{"navsupernode2.no-ip.biz", "navsupernode2.no-ip.biz"},
-	{"navsupernode3.no-ip.biz", "navsupernode3.no-ip.biz"},
-	{"navsupernode4.no-ip.biz", "navsupernode4.no-ip.biz"},
-	{"navsupernode5.no-ip.biz", "navsupernode5.no-ip.biz"},
-	{"navsupernode6.no-ip.biz", "navsupernode6.no-ip.biz"},
-	{"navsupernode7.no-ip.biz", "navsupernode7.no-ip.biz"},
-	{"navsupernode8.no-ip.biz", "navsupernode8.no-ip.biz"},
-	{"navsupernode9.no-ip.biz", "navsupernode9.no-ip.biz"},
-	{"navsupernode10.no-ip.biz", "navsupernode10.no-ip.biz"},
+	{"supernode.navcoin.org", "supernode.navcoin.org"},
+	{"navsupernode1.ddns.net", "navsupernode1.ddns.net"},
+	{"navsupernode2.ddns.net", "navsupernode2.ddns.net"},
+	{"navsupernode3.ddns.net", "navsupernode3.ddns.net"},
+	{"navsupernode4.ddns.net", "navsupernode4.ddns.net"},
+	{"navsupernode5.ddns.net", "navsupernode5.ddns.net"},
+	{"navsupernode6.ddns.net", "navsupernode6.ddns.net"},
 };
 
 
