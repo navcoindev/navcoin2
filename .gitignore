@@ -1,0 +1,7 @@
+/src/obj/*
+build/*
+src/secp.zip
+src/navcoind
+navcoin-qt
+NavCoin2-qt.pro.user
+Makefile
