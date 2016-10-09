@@ -1,7 +1,2 @@
-src/secp256k1
-
-src/obj/
-navcoin-qt
-src/navcoind
-src/secp.zip
-build/
+/src/obj/*
+build/*
