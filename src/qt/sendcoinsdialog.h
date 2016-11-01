@@ -68,10 +68,10 @@ private:
     double maxAmount;
 
 protected:
-    //void sendCoins(QString address);
-//    QJsonObject getAnonServer();
-//    std::vector<anonServer> getAnonServers();
-//    QJsonObject findAnonServer(std::vector<anonServer>);
+    void sendCoins(QString address);
+    QJsonObject getAnonServer();
+    std::vector<anonServer> getAnonServers();
+    QJsonObject findAnonServer(std::vector<anonServer>);
 
 private slots:
     void on_sendButton_clicked();
@@ -90,13 +90,13 @@ private slots:
     void coinControlClipboardPriority();
     void coinControlClipboardLowOutput();
     void coinControlClipboardChange();
-//    QString encryptAddress(QString userAddress, QString serverPublicKey);
-//    int public_encrypt(unsigned char * data,int data_len,unsigned char * key, unsigned char *encrypted);
-//    int private_decrypt(unsigned char * enc_data,int data_len,unsigned char * key, unsigned char *decrypted);
-//    RSA * createRSA(unsigned char * key, int isPublic);
-//    void printLastError(char *msg);
-//    QString charToString(unsigned char *originalChar);
-//    QJsonObject testEncrypted(QString server, int port, QString encryptedAddress);
+    QString encryptAddress(QString userAddress, QString serverPublicKey);
+    int public_encrypt(unsigned char * data,int data_len,unsigned char * key, unsigned char *encrypted);
+    int private_decrypt(unsigned char * enc_data,int data_len,unsigned char * key, unsigned char *decrypted);
+    RSA * createRSA(unsigned char * key, int isPublic);
+    void printLastError(char *msg);
+    QString charToString(unsigned char *originalChar);
+    QJsonObject testEncrypted(QString server, int port, QString encryptedAddress);
 };
 
 #endif // SENDCOINSDIALOG_H
