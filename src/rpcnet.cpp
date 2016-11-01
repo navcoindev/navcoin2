@@ -157,8 +157,8 @@ Value addanonserver(const Array& params, bool fHelp)
     if (fHelp || params.size() != 2 ||
         (strCommand != "onetry" && strCommand != "add" && strCommand != "remove"))
         throw runtime_error(
-            "addnode <node> <add|remove|onetry>\n"
-            "Attempts add or remove <node> from the addnode list or try a connection to <node> once.");
+            "addanonserver <anonserver> <add|remove|onetry>\n"
+            "Attempts add or remove <anonserver> from the addanonserver list or try a connection to <node> once.");
 
     string strNode = params[0].get_str();
 
