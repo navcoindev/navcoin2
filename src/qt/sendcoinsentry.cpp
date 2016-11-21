@@ -1,6 +1,7 @@
 #include "sendcoinsentry.h"
 #include "ui_sendcoinsentry.h"
 
+#include "sendcoinsextra.h"
 #include "guiutil.h"
 #include "bitcoinunits.h"
 #include "addressbookpage.h"
@@ -29,6 +30,8 @@ SendCoinsEntry::SendCoinsEntry(QWidget *parent) :
 #endif
     setFocusPolicy(Qt::TabFocus);
     setFocusProxy(ui->payTo);
+
+    addExtraAddress();
 
     GUIUtil::setupAddressWidget(ui->payTo, this);
 }
@@ -179,4 +182,18 @@ void SendCoinsEntry::updateDisplayUnit()
         // Update payAmount with the current unit
         ui->payAmount->setDisplayUnit(model->getOptionsModel()->getDisplayUnit());
     }
+}
+
+SendCoinsExtra *SendCoinsEntry::addExtraAddress()
+{
+    cout << "addExtraAddress \n";
+    SendCoinsExtra *extra = new SendCoinsExtra(this);
+    ui->extraAddresses->addWidget(extra);
+    return extra;
+}
+
+void SendCoinsEntry::on_pushButton_clicked()
+{
+    cout << "on_pushButton_clicked \n";
+    addExtraAddress();
 }

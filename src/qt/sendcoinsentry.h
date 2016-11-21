@@ -8,6 +8,7 @@ namespace Ui {
 }
 class WalletModel;
 class SendCoinsRecipient;
+class SendCoinsExtra;
 
 /** A single entry in the dialog for sending bitcoins. */
 class SendCoinsEntry : public QFrame
@@ -36,7 +37,7 @@ public:
 public slots:
     void setRemoveEnabled(bool enabled);
     void clear();
-
+    SendCoinsExtra *addExtraAddress();
 signals:
     void removeEntry(SendCoinsEntry *entry);
     void payAmountChanged();
@@ -47,6 +48,8 @@ private slots:
     void on_addressBookButton_clicked();
     void on_pasteButton_clicked();
     void updateDisplayUnit();
+
+    void on_pushButton_clicked();
 
 private:
     Ui::SendCoinsEntry *ui;
