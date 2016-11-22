@@ -5,3 +5,5 @@ src/navcoind
 navcoin-qt
 NavCoin2-qt.pro.user
 Makefile
+qrc_bitcoin.cpp
+src/qt/locale/*
