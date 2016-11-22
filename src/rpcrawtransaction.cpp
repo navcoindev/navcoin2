@@ -253,14 +253,17 @@ Value createrawtransaction(const Array& params, bool fHelp)
     CTransaction rawTx;
 
  	if (params.size() == 3) 
- {
- 	std::string dzeel = params[2].get_str();
- 	if (dzeel.length() > MAX_DZEEL)
- {
- 	dzeel.resize(MAX_DZEEL);
- }
-    	rawTx.strDZeel = dzeel;
+    {
+        std::string dzeel = params[2].get_str();
+        if (dzeel.length() > MAX_DZEEL)
+        {
+            dzeel.resize(MAX_DZEEL);
+        }
+        rawTx.strDZeel = dzeel;
     }
+
+    if (rawTx.strDZeel.length() > 0)
+        rawTx.nVersion = CTransaction::TXDZEEL_VERSION;
 
     BOOST_FOREACH(Value& input, inputs)
     {
