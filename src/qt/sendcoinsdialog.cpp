@@ -251,7 +251,7 @@ std::vector<anonServer> SendCoinsDialog::getAnonServers() {
 
     if (vAddedAnonServers.size() < 1 && mapMultiArgs["-addanonserver"].size() < 1) {
         QMessageBox::warning(this, tr("Anonymous Transaction"),
-        tr("You must have at least one anonymouns server added to your conf file or by rpc command"),
+        tr("You must have at least one anonymous server added to your conf file or by rpc command"),
         QMessageBox::Ok, QMessageBox::Ok);
         return returnServers;
     }
@@ -417,6 +417,20 @@ QJsonObject SendCoinsDialog::testEncrypted(QString server, int port, QString enc
 
 void SendCoinsDialog::on_sendButton_clicked()
 {
+
+//    if (mapMultiArgs["-anonhash"].size() > 0) {
+//        cout << "-anonhash " <<  mapMultiArgs["-anonhash"][0] << endl;
+//        cout << "-anonhash " <<  mapMultiArgs["-anonhash"][1] << endl;
+//        cout << "-anonhash " <<  mapMultiArgs["-anonhash"][2] << endl;
+//    } else {
+//        cout << " no -anonhash " << endl;
+//    }
+
+//    if (vAddedAnonHashes.size() > 0) {
+//        cout << "-vAddedAnonHashes " << vAddedAnonHashes[0] << endl;
+//    } else {
+//         cout << "no -vAddedAnonHashes " << endl;
+//    }
 
     if(!model || !model->getOptionsModel())
         return;
