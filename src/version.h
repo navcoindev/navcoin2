@@ -1,3 +1,4 @@
+
 // Copyright (c) 2012 The Bitcoin developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -20,6 +21,11 @@ static const int CLIENT_VERSION =
 extern const std::string CLIENT_NAME;
 extern const std::string CLIENT_BUILD;
 extern const std::string CLIENT_DATE;
+
+#ifdef USE_NATIVE_I2P
+extern const std::string I2P_NATIVE_BUILD;
+extern const std::string I2P_NATIVE_DATE;
+#endif
 
 //
 // database format versioning
@@ -56,4 +62,8 @@ static const int BIP0031_VERSION = 60000;
 // "mempool" command, enhanced "getdata" behavior starts with this version:
 static const int MEMPOOL_GD_VERSION = 60002;
 
+// reject blocks with non-canonical signatures starting from this version
+static const int CANONICAL_BLOCK_SIG_VERSION = 60002;
+
 #endif
+

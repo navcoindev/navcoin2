@@ -24,29 +24,20 @@ struct SeedSpec6 {
 // Main network
 //
 
-// Convert the pnSeeds array into usable address objects.
-static void convertSeeds(std::vector<CAddress> &vSeedsOut, const unsigned int *data, unsigned int count, int port)
+// Convert the pnSeeds6 array into usable address objects.
+static void convertSeed6(std::vector<CAddress> &vSeedsOut, const SeedSpec6 *data, unsigned int count)
 {
-     // It'll only connect to one or two seed nodes because once it connects,
-     // it'll get a pile of addresses with newer timestamps.
-     // Seed nodes are given a random 'last seen time' of between one and two
-     // weeks ago.
-     const int64_t nOneWeek = 7*24*60*60;
-    for (unsigned int k = 0; k < count; ++k)
+    // It'll only connect to one or two seed nodes because once it connects,
+    // it'll get a pile of addresses with newer timestamps.
+    // Seed nodes are given a random 'last seen time' of between one and two
+    // weeks ago.
+    const int64_t nOneWeek = 7*24*60*60;
+    for (unsigned int i = 0; i < count; i++)
     {
-        struct in_addr ip;
-        unsigned int i = data[k], t;
-        
-        // -- convert to big endian
-        t =   (i & 0x000000ff) << 24u
-            | (i & 0x0000ff00) << 8u
-            | (i & 0x00ff0000) >> 8u
-            | (i & 0xff000000) >> 24u;
-        
-        memcpy(&ip, &t, sizeof(ip));
-        
-        CAddress addr(CService(ip, port));
-        addr.nTime = GetTime()-GetRand(nOneWeek)-nOneWeek;
+        struct in6_addr ip;
+        memcpy(&ip, data[i].addr, sizeof(ip));
+        CAddress addr(CService(ip, data[i].port));
+        addr.nTime = GetTime() - GetRand(nOneWeek) - nOneWeek;
         vSeedsOut.push_back(addr);
     }
 }
@@ -104,6 +95,7 @@ public:
         assert(hashGenesisBlock == uint256("0x00006a4e3e18c71c6d48ad6c261e2254fa764cf29607a4357c99b712dfbb8e6a"));
         assert(genesis.hashMerkleRoot == uint256("0xc507eec6ccabfd5432d764afceafba42d2d946594b8a60570cb2358a7392c61a"));
 
+		vSeeds.push_back(CDNSSeedData("supernode.navcoin.org", "supernode.navcoin.org"));
         
         base58Prefixes[PUBKEY_ADDRESS] = list_of(53);
         base58Prefixes[SCRIPT_ADDRESS] = list_of(85);
@@ -112,8 +104,7 @@ public:
         base58Prefixes[EXT_SECRET_KEY] = list_of(0x04)(0x88)(0xAD)(0xE4);
         base58Prefixes[EXT_COIN_TYPE]  = list_of(0x80000082);             // NavCoin BIP44 coin type is '82' Index "130"
 
-		vSeeds.push_back(CDNSSeedData("supernode.navcoin.org",  "supernode.navcoin.org"));
-        convertSeeds(vFixedSeeds, pnSeed, ARRAYLEN(pnSeed), nDefaultPort);
+        convertSeed6(vFixedSeeds, pnSeed6_main, ARRAYLEN(pnSeed6_main));
 
         nLastPOWBlock = 20000;
         nPOSStartBlock = 2;
@@ -178,7 +169,7 @@ public:
         base58Prefixes[EXT_SECRET_KEY] = list_of(0x04)(0x35)(0x83)(0x94);
         base58Prefixes[EXT_COIN_TYPE]  = list_of(0x80000082);             // NavCoin BIP44 coin type is '82' Index "130"
 
-        convertSeeds(vFixedSeeds, pnTestnetSeed, ARRAYLEN(pnTestnetSeed), nDefaultPort);
+        convertSeed6(vFixedSeeds, pnSeed6_test, ARRAYLEN(pnSeed6_test));
 
         nLastPOWBlock = 0x7fffffff;
     }

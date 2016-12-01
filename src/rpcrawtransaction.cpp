@@ -218,7 +218,7 @@ Value listunspent(const Array& params, bool fHelp)
             CTxDestination address;
             if (ExtractDestination(pk, address))
             {
-                const CScriptID& hash = boost::get<const CScriptID&>(address);
+                const CScriptID& hash = boost::get<CScriptID>(address);
                 CScript redeemScript;
                 if (pwalletMain->GetCScript(hash, redeemScript))
                     entry.push_back(Pair("redeemScript", HexStr(redeemScript.begin(), redeemScript.end())));
@@ -655,15 +655,7 @@ Value searchrawtransactions(const Array &params, bool fHelp)
         CTransaction tx;
         uint256 hashBlock;
         if (!GetTransaction(*it, tx, hashBlock))
-        {
-           // throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "Cannot read transaction from disk");
-           Object obj;
-	   obj.push_back(Pair("ERROR", "Cannot read transaction from disk"));
-	   result.push_back(obj);
-	}
-	else
-	{
-
+            throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "Cannot read transaction from disk");
         CDataStream ssTx(SER_NETWORK, PROTOCOL_VERSION);
         ssTx << tx;
         string strHex = HexStr(ssTx.begin(), ssTx.end());
@@ -675,9 +667,8 @@ Value searchrawtransactions(const Array &params, bool fHelp)
         } else {
             result.push_back(strHex);
         }
-      
-        }
         it++;
     }
     return result;
 }
+

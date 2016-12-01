@@ -14,7 +14,6 @@
 #include "checkpoints.h"
 #include "activeinode.h"
 #include "hub.h"
-#include "smessage.h"
 
 #ifdef ENABLE_WALLET
 #include "wallet.h"
@@ -32,6 +31,9 @@
 #include <signal.h>
 #endif
 
+#ifdef USE_NATIVE_I2P
+#include "i2p.h"
+#endif
 
 using namespace std;
 using namespace boost;
@@ -47,8 +49,6 @@ unsigned int nDerivationMethodIndex;
 unsigned int nMinerSleep;
 bool fUseFastIndex;
 bool fOnlyTor = false;
-
-enum Checkpoints::CPMode CheckpointsMode;
 
 //////////////////////////////////////////////////////////////////////////////
 //
@@ -101,8 +101,6 @@ void Shutdown()
     RenameThread("navcoin-shutoff");
     mempool.AddTransactionsUpdated(1);
     StopRPCThreads();
-    SecureMsgShutdown();
-
 #ifdef ENABLE_WALLET
     ShutdownRPCMining();
     if (pwalletMain)
@@ -154,6 +152,15 @@ bool static InitWarning(const std::string &str)
     return true;
 }
 
+#ifdef USE_NATIVE_I2P
+bool static BindNativeI2P(/*bool fError = true*/)
+{
+    if (IsLimited(NET_NATIVE_I2P))
+        return false;
+    return BindListenNativeI2P();
+}
+#endif
+
 bool static Bind(const CService &addr, bool fError = true) {
     if (IsLimited(addr))
         return false;
@@ -190,13 +197,11 @@ std::string HelpMessage()
     strUsage += "  -externalip=<ip>       " + _("Specify your own public address") + "\n";
     strUsage += "  -onlynet=<net>         " + _("Only connect to nodes in network <net> (IPv4, IPv6 or Tor)") + "\n";
     strUsage += "  -discover              " + _("Discover own IP address (default: 1 when listening and no -externalip)") + "\n";
-    strUsage += "  -irc                   " + _("Find peers using internet relay chat (default: 0)") + "\n";
     strUsage += "  -listen                " + _("Accept connections from outside (default: 1 if no -proxy or -connect)") + "\n";
     strUsage += "  -bind=<addr>           " + _("Bind to given address. Use [host]:port notation for IPv6") + "\n";
     strUsage += "  -dnsseed               " + _("Query for peer addresses via DNS lookup, if low on addresses (default: 1 unless -connect)") + "\n";
     strUsage += "  -forcednsseed          " + _("Always query for peer addresses via DNS lookup (default: 0)") + "\n";
     strUsage += "  -synctime              " + _("Sync time with other nodes. Disable if time on your system is precise e.g. syncing with NTP (default: 1)") + "\n";
-    strUsage += "  -cppolicy              " + _("Sync checkpoints policy (default: strict)") + "\n";
     strUsage += "  -banscore=<n>          " + _("Threshold for disconnecting misbehaving peers (default: 100)") + "\n";
     strUsage += "  -bantime=<n>           " + _("Number of seconds to keep misbehaving peers from reconnecting (default: 86400)") + "\n";
     strUsage += "  -maxreceivebuffer=<n>  " + _("Maximum per-connection receive buffer, <n>*1000 bytes (default: 5000)") + "\n";
@@ -233,8 +238,6 @@ std::string HelpMessage()
     strUsage += "  -logtimestamps         " + _("Prepend debug output with timestamp") + "\n";
     strUsage += "  -shrinkdebugfile       " + _("Shrink debug.log file on client startup (default: 1 when no -debug)") + "\n";
     strUsage += "  -printtoconsole        " + _("Send trace/debug info to console instead of debug.log file") + "\n";
-    strUsage += "  -regtest               " + _("Enter regression test mode, which uses a special chain in which blocks can be "
-                                                "solved instantly. This is intended for regression testing tools and app development.") + "\n";
     strUsage += "  -rpcuser=<user>        " + _("Username for JSON-RPC connections") + "\n";
     strUsage += "  -rpcpassword=<pw>      " + _("Password for JSON-RPC connections") + "\n";
     strUsage += "  -rpcport=<port>        " + _("Listen for JSON-RPC connections on <port> (default: 44444 or testnet: 33444)") + "\n";
@@ -286,10 +289,10 @@ strUsage += "\n" + _("Inode options:") + "\n";
     strUsage += "\n" + _("Tesseractx  options:") + "\n";
     strUsage += "  -enabletesseract x=<n>    " + _("Enable tesseractx, show confirmations for locked transactions (bool, default: true)") + "\n";
     strUsage += "  -tesseractxdepth=<n>     " + _("Show N confirmations for a successfully locked transaction (0-9999, default: 1)") + "\n";
-    strUsage += _("Secure messaging options:") + "\n" +
-        "  -nosmsg                                  " + _("Disable secure messaging.") + "\n" +
-        "  -debugsmsg                               " + _("Log extra debug messages.") + "\n" +
-        "  -smsgscanchain                           " + _("Scan the block chain for public key addresses on startup.") + "\n";
+
+
+
+
 
 
     return strUsage;
@@ -361,31 +364,28 @@ bool AppInit2(boost::thread_group& threadGroup)
 
     // ********************************************************* Step 2: parameter interactions
 
+#ifdef USE_NATIVE_I2P
+    if (GetBoolArg(I2P_SAM_GENERATE_DESTINATION_PARAM, false))
+    {
+        const SAM::FullDestination generatedDest = I2PSession::Instance().destGenerate();
+        uiInterface.ThreadSafeShowGeneratedI2PAddress(
+                    "Generated I2P address",
+                    generatedDest.pub,
+                    generatedDest.priv,
+                    I2PSession::GenerateB32AddressFromDestination(generatedDest.pub),
+                    GetConfigFile().string());
+        return false;
+    }
+#endif
+
     nNodeLifespan = GetArg("-addrlifespan", 7);
     fUseFastIndex = GetBoolArg("-fastindex", true);
     nMinerSleep = GetArg("-minersleep", 500);
 
-    CheckpointsMode = Checkpoints::STRICT;
-    std::string strCpMode = GetArg("-cppolicy", "strict");
-
-    if(strCpMode == "strict")
-        CheckpointsMode = Checkpoints::STRICT;
-
-    if(strCpMode == "advisory")
-        CheckpointsMode = Checkpoints::ADVISORY;
-
-    if(strCpMode == "permissive")
-        CheckpointsMode = Checkpoints::PERMISSIVE;
-
     nDerivationMethodIndex = 0;
 
     if (!SelectParamsFromCommandLine()) {
-        return InitError("Invalid combination of -testnet and -regtest.");
-    }
-
-    if (TestNet())
-    {
-        SoftSetBoolArg("-irc", true);
+        return InitError("Invalid combination of -testnet.");
     }
 
     if (mapArgs.count("-bind")) {
@@ -439,16 +439,6 @@ bool AppInit2(boost::thread_group& threadGroup)
     const vector<string>& categories = mapMultiArgs["-debug"];
     if (GetBoolArg("-nodebug", false) || find(categories.begin(), categories.end(), string("0")) != categories.end())
         fDebug = false;
-
-    if(fDebug)
-    {
-	fDebugSmsg = true;
-    } else
-    {
-        fDebugSmsg = GetBoolArg("-debugsmsg", false);
-    }
-    fNoSmsg = GetBoolArg("-nosmsg", false);
-
 
     // Check for -debugnet (deprecated)
     if (GetBoolArg("-debugnet", false))
@@ -670,6 +660,10 @@ bool AppInit2(boost::thread_group& threadGroup)
                 fBound |= Bind(CService(in6addr_any, GetListenPort()), false);
             if (!IsLimited(NET_IPV4))
                 fBound |= Bind(CService(inaddr_any, GetListenPort()), !fBound);
+#ifdef USE_NATIVE_I2P
+            if (!IsLimited(NET_NATIVE_I2P))
+                fBound |= BindNativeI2P();
+#endif
         }
         if (!fBound)
             return InitError(_("Failed to listen on any port. Use -listen=0 if you want this."));
@@ -880,10 +874,6 @@ bool AppInit2(boost::thread_group& threadGroup)
 
     LogPrintf("Loaded %i addresses from peers.dat  %dms\n",
            addrman.size(), GetTimeMillis() - nStart);
-
-    // ********************************************************* Step 10.1: startup secure messaging
-    
-    SecureMsgStart(fNoSmsg, GetBoolArg("-smsgscanchain", false));
 
     // ********************************************************* Step 11: start node
 

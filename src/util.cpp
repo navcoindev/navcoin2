@@ -86,8 +86,6 @@ std::vector<int64_t> anonSendDenominations;
 map<string, string> mapArgs;
 map<string, vector<string> > mapMultiArgs;
 bool fDebug = false;
-bool fDebugSmsg = false;
-bool fNoSmsg = false;
 bool fPrintToConsole = false;
 bool fPrintToDebugLog = true;
 bool fDaemon = false;
@@ -1225,30 +1223,6 @@ void FileCommit(FILE *fileout)
 #endif
 }
 
-std::string getTimeString(int64_t timestamp, char *buffer, size_t nBuffer)
-{
-    struct tm* dt;
-    time_t t = timestamp;
-    dt = localtime(&t);
-    
-    strftime(buffer, nBuffer, "%Y-%m-%d %H:%M:%S %z", dt); // %Z shows long strings on windows
-    return std::string(buffer); // copies the null-terminated character sequence
-};
-
-std::string bytesReadable(uint64_t nBytes)
-{
-    if (nBytes >= 1024ll*1024ll*1024ll*1024ll)
-        return strprintf("%.2f TB", nBytes/1024.0/1024.0/1024.0/1024.0);
-    if (nBytes >= 1024*1024*1024)
-        return strprintf("%.2f GB", nBytes/1024.0/1024.0/1024.0);
-    if (nBytes >= 1024*1024)
-        return strprintf("%.2f MB", nBytes/1024.0/1024.0);
-    if (nBytes >= 1024)
-        return strprintf("%.2f KB", nBytes/1024.0);
-    
-    return strprintf("%d B", nBytes);
-};
-
 void ShrinkDebugFile()
 {
     // Scroll debug.log if it's getting too big
@@ -1318,6 +1292,13 @@ string FormatFullVersion()
 {
     return CLIENT_BUILD;
 }
+
+#ifdef USE_NATIVE_I2P
+std::string FormatI2PNativeFullVersion()
+{
+    return I2P_NATIVE_BUILD;
+}
+#endif
 
 // Format the subversion field according to BIP 14 spec (https://en.bitcoin.it/wiki/BIP_0014)
 std::string FormatSubVersion(const std::string& name, int nClientVersion, const std::vector<std::string>& comments)
