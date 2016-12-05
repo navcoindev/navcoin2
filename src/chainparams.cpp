@@ -95,7 +95,7 @@ public:
         assert(hashGenesisBlock == uint256("0x00006a4e3e18c71c6d48ad6c261e2254fa764cf29607a4357c99b712dfbb8e6a"));
         assert(genesis.hashMerkleRoot == uint256("0xc507eec6ccabfd5432d764afceafba42d2d946594b8a60570cb2358a7392c61a"));
 
-		vSeeds.push_back(CDNSSeedData("supernode.navcoin.org", "supernode.navcoin.org"));
+		vSeeds.push_back(CDNSSeedData("supernode.navcoin.org", "95.183.51.56"));
         
         base58Prefixes[PUBKEY_ADDRESS] = list_of(53);
         base58Prefixes[SCRIPT_ADDRESS] = list_of(85);
