@@ -7,7 +7,7 @@
 
 // These need to be macros, as version.cpp's and bitcoin-qt.rc's voodoo requires it
 #define CLIENT_VERSION_MAJOR       3
-#define CLIENT_VERSION_MINOR       7
+#define CLIENT_VERSION_MINOR       9
 #define CLIENT_VERSION_REVISION    0
 #define CLIENT_VERSION_BUILD       0
 
@@ -18,5 +18,10 @@
 // Don't merge these into one macro!
 #define STRINGIZE(X) DO_STRINGIZE(X)
 #define DO_STRINGIZE(X) #X
+
+#ifdef USE_NATIVE_I2P
+#define I2P_NATIVE_VERSION_MAJOR       1
+#define I2P_NATIVE_VERSION_MINOR       0
+#endif
 
 #endif // CLIENTVERSION_H

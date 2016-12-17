@@ -125,7 +125,6 @@ OBJS= \
     obj/rpcnet.o \
     obj/rpcblockchain.o \
     obj/rpcrawtransaction.o \
-    obj/rpcsmessage.o \
     obj/timedata.o \
     obj/script.o \
     obj/sync.o \
@@ -155,7 +154,6 @@ OBJS= \
     obj/crypto/sha1.o \
     obj/crypto/sha256.o \
     obj/crypto/sha512.o \
-    obj/smessage.o \
     obj/cubehash.o \
     obj/luffa.o \
     obj/aes_helper.o \
@@ -170,6 +168,11 @@ OBJS= \
 	obj/fugue.o \
     obj/hamsi.o \
     obj/skein.o
+
+ifdef USE_NATIVE_I2P
+	OBJS += obj/i2p.o
+	OBJS += obj/i2psam.o
+endif
 
 ifeq (${USE_WALLET}, 1)
     DEFS += -DENABLE_WALLET

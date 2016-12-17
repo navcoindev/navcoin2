@@ -1,10 +1,10 @@
 TEMPLATE = app
 TARGET = navcoin-qt
-VERSION = 3.8.0.0
+VERSION = 3.9.0.0
 INCLUDEPATH += src src/json src/qt src/qt/plugins/mrichtexteditor
 QT += network printsupport
 DEFINES += ENABLE_WALLET
-DEFINES += BOOST_THREAD_USE_LIB BOOST_SPIRIT_THREADSAFE
+DEFINES += BOOST_THREAD_USE_LIB BOOST_SPIRIT_THREADSAFE USE_NATIVE_I2P
 CONFIG += no_include_pwd
 CONFIG += thread
 CONFIG += static
@@ -165,6 +165,14 @@ LIBS += $$PWD/src/secp256k1/src/libsecp256k1_la-secp256k1.o
     DEFINES += HAVE_BUILD_INFO
 }
 
+contains(DEFINES, USE_NATIVE_I2P) {
+    geni2pbuild.depends = FORCE
+   # geni2pbuild.commands = cd $$PWD; /bin/sh share/inc_build_number.sh src/i2pbuild.h bitcoin-qt-build-number
+    geni2pbuild.target = src/i2pbuild.h
+    PRE_TARGETDEPS += src/i2pbuild.h
+    QMAKE_EXTRA_TARGETS += geni2pbuild
+}
+
 contains(USE_O3, 1) {
     message(Building O3 optimization flag)
     QMAKE_CXXFLAGS_RELEASE -= -O2
@@ -307,11 +315,6 @@ HEADERS += src/qt/bitcoingui.h \
     src/qt/addeditrushnode.h \
     src/qt/rushnodeconfigdialog.h \
     src/qt/qcustomplot.h \
-    src/smessage.h \
-    src/qt/messagepage.h \
-    src/qt/messagemodel.h \
-    src/qt/sendmessagesdialog.h \
-    src/qt/sendmessagesentry.h \
     src/qt/blockbrowser.h \
     src/qt/plugins/mrichtexteditor/mrichtextedit.h \
     src/qt/qvalidatedtextedit.h \
@@ -431,17 +434,11 @@ SOURCES += src/qt/bitcoin.cpp src/qt/bitcoingui.cpp \
     src/qt/addeditrushnode.cpp \
     src/qt/rushnodeconfigdialog.cpp \
     src/qt/qcustomplot.cpp \
-    src/smessage.cpp \
-    src/qt/messagepage.cpp \
-    src/qt/messagemodel.cpp \
-    src/qt/sendmessagesdialog.cpp \
-    src/qt/sendmessagesentry.cpp \
     src/qt/blockbrowser.cpp \
     src/qt/qvalidatedtextedit.cpp \
     src/qt/plugins/mrichtexteditor/mrichtextedit.cpp \
     src/qt/tradingdialog.cpp \
 	src/qt/stakereportdialog.cpp \
-    src/rpcsmessage.cpp \
     src/blake.c \
     src/bmw.c \
     src/groestl.c \
@@ -476,13 +473,25 @@ FORMS += \
     src/qt/forms/inodemanager.ui \
     src/qt/forms/addeditrushnode.ui \
     src/qt/forms/rushnodeconfigdialog.ui \
-    src/qt/forms/messagepage.ui \
-    src/qt/forms/sendmessagesentry.ui \
-    src/qt/forms/sendmessagesdialog.ui \
     src/qt/forms/blockbrowser.ui \
     src/qt/forms/tradingdialog.ui \
 	src/qt/forms/stakereportdialog.ui \
     src/qt/plugins/mrichtexteditor/mrichtextedit.ui 
+
+contains(DEFINES, USE_NATIVE_I2P) {
+HEADERS += src/i2p.h \
+	src/i2psam.h \
+	src/qt/showi2paddresses.h \
+	src/qt/i2poptionswidget.h
+
+SOURCES += src/i2p.cpp \
+	src/i2psam.cpp \
+	src/qt/showi2paddresses.cpp \
+	src/qt/i2poptionswidget.cpp
+
+FORMS += src/qt/forms/showi2paddresses.ui \
+	src/qt/forms/i2poptionswidget.ui
+}
 
 contains(USE_QRCODE, 1) {
 HEADERS += src/qt/qrcodedialog.h

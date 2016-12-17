@@ -32,11 +32,12 @@
 #include "wallet.h"
 #include "init.h"
 #include "ui_interface.h"
-#include "messagemodel.h"
-#include "messagepage.h"
 #include "blockbrowser.h"
 #include "tradingdialog.h"
 #include "stakereportdialog.h"   // ** em52
+#ifdef USE_NATIVE_I2P
+#include "showi2paddresses.h"
+#endif
 
 #ifdef Q_OS_MAC
 #include "macdockiconhandler.h"
@@ -144,7 +145,7 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
 
     signVerifyMessageDialog = new SignVerifyMessageDialog(this);
 
-    messagePage = new MessagePage(this);
+
     
     centralStackedWidget = new QStackedWidget(this);
     centralStackedWidget->setContentsMargins(0, 0, 0, 0);
@@ -153,7 +154,7 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     centralStackedWidget->addWidget(addressBookPage);
     centralStackedWidget->addWidget(receiveCoinsPage);
     centralStackedWidget->addWidget(sendCoinsPage);
-    centralStackedWidget->addWidget(messagePage);
+
     centralStackedWidget->addWidget(blockBrowser);
     centralStackedWidget->addWidget(tradingDialogPage);
 
@@ -174,28 +175,38 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     // Status bar notification icons
     QWidget *frameBlocks = new QWidget();
     frameBlocks->setContentsMargins(0,0,0,0);
-    frameBlocks->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    frameBlocks->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
     frameBlocks->setStyleSheet("QWidget { background: none; margin-bottom: 5px; }");
     QHBoxLayout *frameBlocksLayout = new QHBoxLayout(frameBlocks);
     frameBlocksLayout->setContentsMargins(3,0,3,0);
-    frameBlocksLayout->setSpacing(3);
-    frameBlocksLayout->setAlignment(Qt::AlignHCenter);
+    frameBlocksLayout->setSpacing(6);
+    //frameBlocksLayout->setAlignment(Qt::AlignHCenter);
     labelEncryptionIcon = new QLabel();
     labelStakingIcon = new QLabel();
     labelConnectionsIcon = new QLabel();
     labelBlocksIcon = new QLabel();
-    frameBlocksLayout->addWidget(netLabel);
-    //frameBlocksLayout->addStretch();
+
+#ifdef USE_NATIVE_I2P
+    labelI2PConnections = new QLabel();
+    labelI2POnly = new QLabel();
+    labelI2PGenerated = new QLabel();
+	frameBlocksLayout->addStretch();
+    frameBlocksLayout->addWidget(labelI2PGenerated);
+	frameBlocksLayout->addStretch();
+    frameBlocksLayout->addWidget(labelI2POnly);
+	frameBlocksLayout->addStretch();
+    frameBlocksLayout->addWidget(labelI2PConnections);
+#endif
+
+    frameBlocksLayout->addStretch();
     frameBlocksLayout->addWidget(labelEncryptionIcon);
-    //frameBlocksLayout->addStretch();
+    frameBlocksLayout->addStretch();
     frameBlocksLayout->addWidget(labelStakingIcon);
-    //frameBlocksLayout->addStretch();
+    frameBlocksLayout->addStretch();
     frameBlocksLayout->addWidget(labelConnectionsIcon);
-    //frameBlocksLayout->addStretch();
+    frameBlocksLayout->addStretch();
     frameBlocksLayout->addWidget(labelBlocksIcon);
-    //frameBlocksLayout->addStretch();
-	frameBlocksLayout->addWidget(netLabel);
-    //frameBlocksLayout->addStretch();
+    frameBlocksLayout->addStretch();
     
 
     if (GetBoolArg("-staking", true))
@@ -297,11 +308,6 @@ void BitcoinGUI::createActions()
     addressBookAction->setCheckable(true);
     addressBookAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_5));
     tabGroup->addAction(addressBookAction);
-
-    messageAction = new QAction(QIcon(":/icons/mail-white"), tr("&Messages"), this);
-    messageAction->setToolTip(tr("View and Send Encrypted messages"));
-    messageAction->setCheckable(true);
-    tabGroup->addAction(messageAction);
 	
     // ** em52
     stakeReportAction = new QAction(QIcon(":/icons/history"), tr("&Show stake report"), this);
@@ -332,8 +338,7 @@ void BitcoinGUI::createActions()
     connect(historyAction, SIGNAL(triggered()), this, SLOT(gotoHistoryPage()));
     connect(addressBookAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
     connect(addressBookAction, SIGNAL(triggered()), this, SLOT(gotoAddressBookPage()));
-    connect(messageAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
-    connect(messageAction, SIGNAL(triggered()), this, SLOT(gotoMessagePage()));
+
 	connect(stakeReportAction, SIGNAL(triggered()), this, SLOT(stakeReportClicked()));    // ** em52
 
     quitAction = new QAction(tr("E&xit"), this);
@@ -452,7 +457,7 @@ void BitcoinGUI::createToolBars()
     toolbar->addAction(sendCoinsAction);
     toolbar->addAction(historyAction);
     toolbar->addAction(addressBookAction);
-    toolbar->addAction(messageAction);
+
     toolbar->addAction(blockAction);
     toolbar->addAction(TradingAction);
     netLabel = new QLabel();
@@ -466,6 +471,16 @@ void BitcoinGUI::createToolBars()
 
     addToolBar(Qt::LeftToolBarArea, toolbar);
 
+    netLabel = new QLabel();
+    
+
+    toolbar->addWidget(makeToolBarSpacer());
+    netLabel->setObjectName("netLabel");
+    netLabel->setStyleSheet("#netLabel { background: rgb(96,96,96); color: white; text-align: center; }");
+    toolbar->addWidget(netLabel);
+      
+    int w = 0;
+
     foreach(QAction *action, toolbar->actions()) {
         toolbar->widgetForAction(action)->setFixedWidth(180);
         toolbar->widgetForAction(action)->setStyleSheet("border-top-right-radius: 5px; border-bottom-right-radius: 5px; padding-left: 5px;");
@@ -475,13 +490,52 @@ void BitcoinGUI::createToolBars()
 void BitcoinGUI::setClientModel(ClientModel *clientModel)
 {
     if(!fOnlyTor)
-    netLabel->setText("NAVNET");
+    {
+	#ifdef USE_NATIVE_I2P
+             setNumI2PConnections(clientModel->getNumI2PConnections());
+             connect(clientModel, SIGNAL(numI2PConnectionsChanged(int)), this, SLOT(setNumI2PConnections(int)));
+	if(clientModel->isI2POnly())
+	{
+	    netLabel->setMinimumSize(160, 20);
+    	netLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    	netLabel->setPixmap(QPixmap(":/icons/i2p"));
+    	netLabel->setMaximumSize(160, 20);
+        netLabel->setToolTip(tr("Wallet is using I2P-network only"));
+	}
+	else
+	{
+	#endif
+
+	netLabel->setMinimumSize(160, 20);
+    netLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    netLabel->setPixmap(QPixmap(":/icons/clearnet"));
+    netLabel->setMaximumSize(160, 20);
+	netLabel->setToolTip(tr("Wallet is using normal connection"));
+	#ifdef USE_NATIVE_I2P
+	}
+
+        if (clientModel->isI2PAddressGenerated())
+        {
+            labelI2PGenerated->setText("R-I2P");
+            labelI2PGenerated->setToolTip(tr("Wallet is running with a random generated I2P-address"));
+        }
+        else
+        {
+            labelI2PGenerated->setText("S-I2P");
+            labelI2PGenerated->setToolTip(tr("Wallet is running with a static I2P-address"));
+        }
+	#endif
+    }
     else
     {
-    if(!IsLimited(NET_TOR))
-    {
-    netLabel->setText("TOR");
-    }
+	if(!IsLimited(NET_TOR))
+	{
+	    netLabel->setMinimumSize(160, 20);
+    	netLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    	netLabel->setPixmap(QPixmap(":/icons/tor"));
+    	netLabel->setMaximumSize(160, 20);
+    	netLabel->setToolTip(tr("Wallet is using TOR-network only"));
+	}
     }
 
     this->clientModel = clientModel;
@@ -556,23 +610,6 @@ void BitcoinGUI::setWalletModel(WalletModel *walletModel)
     }
 }
 
-void BitcoinGUI::setMessageModel(MessageModel *messageModel)
-{
-    this->messageModel = messageModel;
-    if(messageModel)
-    {
-        // Report errors from message thread
-        connect(messageModel, SIGNAL(error(QString,QString,bool)), this, SLOT(error(QString,QString,bool)));
-
-        // Put transaction list in tabs
-        messagePage->setModel(messageModel);
-
-        // Balloon pop-up for new message
-        connect(messageModel, SIGNAL(rowsInserted(QModelIndex,int,int)),
-                this, SLOT(incomingMessage(QModelIndex,int,int)));
-    }
-}
-
 void BitcoinGUI::createTrayIcon()
 {
     QMenu *trayIconMenu;
@@ -628,6 +665,9 @@ void BitcoinGUI::optionsClicked()
         return;
     OptionsDialog dlg;
     dlg.setModel(clientModel->getOptionsModel());
+#ifdef USE_NATIVE_I2P
+    dlg.setClientModel(clientModel);
+#endif
     dlg.exec();
 }
 
@@ -637,6 +677,31 @@ void BitcoinGUI::aboutClicked()
     dlg.setModel(clientModel);
     dlg.exec();
 }
+
+#ifdef USE_NATIVE_I2P
+void BitcoinGUI::showGeneratedI2PAddr(const QString& caption, const QString& pub, const QString& priv, const QString& b32, const QString& configFileName)
+{
+    ShowI2PAddresses i2pDialog(caption, pub, priv, b32, configFileName, this);
+    i2pDialog.exec();
+}
+#endif
+
+#ifdef USE_NATIVE_I2P
+void BitcoinGUI::setNumI2PConnections(int count)
+{
+    QString i2pIcon;
+    switch(count)
+    {
+    case 0: i2pIcon = ":/icons/bwi2pconnect_0"; break;
+    case 1: /*case 2: case 3:*/ i2pIcon = ":/icons/bwi2pconnect_1"; break;
+    case 2:/*case 4: case 5: case 6:*/ i2pIcon = ":/icons/bwi2pconnect_2"; break;
+    case 3:/*case 7: case 8: case 9:*/ i2pIcon = ":/icons/bwi2pconnect_3"; break;
+    default: i2pIcon = ":/icons/bwi2pconnect_4"; break;
+    }
+    labelI2PConnections->setPixmap(QPixmap(i2pIcon));
+    labelI2PConnections->setToolTip(tr("%n active connection(s) to I2P-ion network", "", count));
+}
+#endif
 
 // Modelesss stake report dialog   ** em52
 void BitcoinGUI::stakeReportClicked()
@@ -873,35 +938,6 @@ void BitcoinGUI::incomingTransaction(const QModelIndex & parent, int start, int 
     }
 }
 
-void BitcoinGUI::incomingMessage(const QModelIndex & parent, int start, int end)
-{
-    if(!messageModel)
-        return;
-
-    MessageModel *mm = messageModel;
-
-    if (mm->index(start, MessageModel::TypeInt, parent).data().toInt() == MessageTableEntry::Received)
-    {
-        QString sent_datetime = mm->index(start, MessageModel::ReceivedDateTime, parent).data().toString();
-        QString from_address  = mm->index(start, MessageModel::FromAddress,      parent).data().toString();
-        QString to_address    = mm->index(start, MessageModel::ToAddress,        parent).data().toString();
-        QString message       = mm->index(start, MessageModel::Message,          parent).data().toString();
-        QTextDocument html;
-        html.setHtml(message);
-        QString messageText(html.toPlainText());
-        notificator->notify(Notificator::Information,
-                            tr("Incoming Message"),
-                            tr("Date: %1\n"
-                               "From Address: %2\n"
-                               "To Address: %3\n"
-                               "Message: %4\n")
-                              .arg(sent_datetime)
-                              .arg(from_address)
-                              .arg(to_address)
-                              .arg(messageText));
-    };
-}
-
 void BitcoinGUI::clearWidgets()
 {
     centralStackedWidget->setCurrentWidget(centralStackedWidget->widget(0));
@@ -994,16 +1030,6 @@ void BitcoinGUI::gotoVerifyMessageTab(QString addr)
 
     if(!addr.isEmpty())
         signVerifyMessageDialog->setAddress_VM(addr);
-}
-
-void BitcoinGUI::gotoMessagePage()
-{
-    messageAction->setChecked(true);
-    centralStackedWidget->setCurrentWidget(messagePage);
-
-    exportAction->setEnabled(true);
-    disconnect(exportAction, SIGNAL(triggered()), 0, 0);
-    connect(exportAction, SIGNAL(triggered()), messagePage, SLOT(exportClicked()));
 }
 
 void BitcoinGUI::dragEnterEvent(QDragEnterEvent *event)

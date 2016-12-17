@@ -16,8 +16,6 @@ class SendCoinsDialog;
 class SignVerifyMessageDialog;
 class Notificator;
 class RPCConsole;
-class MessagePage;
-class MessageModel;
 class BlockBrowser;
 class tradingDialog;
 
@@ -51,7 +49,6 @@ public:
         functionality.
     */
     void setWalletModel(WalletModel *walletModel);
-    void setMessageModel(MessageModel *messageModel);
 
 protected:
     void changeEvent(QEvent *e);
@@ -62,7 +59,6 @@ protected:
 private:
     ClientModel *clientModel;
     WalletModel *walletModel;
-    MessageModel *messageModel;
 
     QToolBar *toolbar;
 
@@ -76,7 +72,6 @@ private:
     AddressBookPage *receiveCoinsPage;
     SendCoinsDialog *sendCoinsPage;
     SignVerifyMessageDialog *signVerifyMessageDialog;
-    MessagePage *messagePage;
     QLabel* netLabel;
     BlockBrowser *blockBrowser;
     tradingDialog   *tradingDialogPage;
@@ -87,6 +82,11 @@ private:
     QLabel *progressBarLabel;
     QProgressBar *progressBar;
     QProgressDialog *progressDialog;
+#ifdef USE_NATIVE_I2P
+    QLabel* labelI2PConnections;
+    QLabel* labelI2POnly;
+    QLabel* labelI2PGenerated;
+#endif
 
     QMenuBar *appMenuBar;
     QAction *overviewAction;
@@ -108,7 +108,6 @@ private:
     QAction *lockWalletAction;
     QAction *aboutQtAction;
     QAction *openRPCConsoleAction;
-    QAction *messageAction;
     QAction *blockAction;
     QAction *TradingAction;
 	QAction *stakeReportAction;    // ** em52
@@ -136,6 +135,9 @@ private:
     void clearWidgets();
 
 public slots:
+#ifdef USE_NATIVE_I2P
+    void setNumI2PConnections(int count);
+#endif
     /** Set number of connections shown in the UI */
     void setNumConnections(int count);
     /** Set number of blocks shown in the UI */
@@ -164,6 +166,9 @@ public slots:
     */
     void askFee(qint64 nFeeRequired, bool *payFee);
     void handleURI(QString strURI);
+#ifdef USE_NATIVE_I2P
+    void showGeneratedI2PAddr(const QString& caption, const QString& pub, const QString& priv, const QString& b32, const QString& configFileName);
+#endif  
 
 private slots:
     /** Switch to overview (home) page */
@@ -185,8 +190,6 @@ private slots:
     void gotoSignMessageTab(QString addr = "");
     /** Show Sign/Verify Message dialog and switch to verify message tab */
     void gotoVerifyMessageTab(QString addr = "");
-    /** Switch to message page*/
-    void gotoMessagePage();
 
     /** Show configuration dialog */
     void optionsClicked();
@@ -201,7 +204,6 @@ private slots:
         The new items are those between start and end inclusive, under the given parent item.
     */
     void incomingTransaction(const QModelIndex & parent, int start, int end);
-    void incomingMessage(const QModelIndex & parent, int start, int end);
     /** Encrypt the wallet */
     void encryptWallet();
     /** Backup the wallet */

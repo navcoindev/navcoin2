@@ -159,7 +159,7 @@ void ProcessMessageInode(CNode* pfrom, std::string& strCommand, CDataStream& vRe
         tx.vin.push_back(vin);
         tx.vout.push_back(vout);
         //if(AcceptableInputs(mempool, state, tx)){
-	bool* pfMissingInputs = false;
+	bool* pfMissingInputs = NULL;
 	if(AcceptableInputs(mempool, tx, false, pfMissingInputs)){
             if(fDebug) LogPrintf("dsee - Accepted inode entry %i %i\n", count, current);
 
@@ -603,7 +603,7 @@ void CINode::Check()
         tx.vout.push_back(vout);
 
         //if(!AcceptableInputs(mempool, state, tx)){
-        bool* pfMissingInputs = false;
+        bool* pfMissingInputs = NULL;
 	if(!AcceptableInputs(mempool, tx, false, pfMissingInputs)){
             enabled = 3;
             return;
