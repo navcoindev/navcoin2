@@ -342,26 +342,52 @@ QJsonObject SendCoinsDialog::findAnonServer(std::vector<anonServer> anonServers)
             if (type != "SUCCESS") {
                 anonServers.erase(anonServers.begin()+randIndex);
                 return this->findAnonServer(anonServers);
-            } else {
-                QJsonObject jsonData = jsonObject["data"].toObject();
-                QJsonArray addressArray = jsonData["nav_addresses"].toArray();
-                QString serverAddress = addressArray[0].toString();
-                minAmount = jsonData["min_amount"].toDouble();
-                maxAmount = jsonData["max_amount"].toDouble();
-                double txFee = jsonData["transaction_fee"].toDouble();
+            }
 
-                QString messageString = QString("Are you sure you want to send these coins through the Nav Anonymous Network? There will be a %1% transaction fee.").arg(txFee);
+            QJsonObject jsonData = jsonObject["data"].toObject();
+            QJsonArray addressArray = jsonData["nav_addresses"].toArray();
+            QString serverAddress = addressArray[0].toString();
+            minAmount = jsonData["min_amount"].toDouble();
+            maxAmount = jsonData["max_amount"].toDouble();
+            double txFee = jsonData["transaction_fee"].toDouble();
 
-                QMessageBox::StandardButton reply;
-                reply = QMessageBox::question(this, "Anonymous Transaction", messageString, QMessageBox::Yes|QMessageBox::No);
+            QString anonHash = jsonData["md5"].toString();
 
-                if(reply == QMessageBox::Yes){
-                    model->setAnonDetails(minAmount, maxAmount, serverAddress);
-                    return jsonObject;
-                } else {
-                    QJsonDocument jsonDoc =  QJsonDocument::fromJson("{type:\"FAIL\"}");
-                    return jsonDoc.object();
+            bool hashMatched = false;
+
+            for (int i = 0; i < mapMultiArgs["-anonhash"].size(); i++) {
+                if (mapMultiArgs["-anonhash"][i] == anonHash.toStdString()) {
+                    hashMatched = true;
                 }
+            }
+
+            for (int i = 0; i < vAddedAnonHashes.size(); i++) {
+                if (vAddedAnonHashes[i] == anonHash.toStdString()) {
+                    hashMatched = true;
+                }
+            }
+
+            if (!hashMatched) {
+                QString hashErrorString = QString("The md5 hash returned by the server (%1:%2) does not match any which you have listed in your configuration file. Consider removing this server from your list or updating your accepted md5 hash if it has changed").arg(ipAddress).arg(port);
+                QMessageBox::warning(this, tr("Anonymous Transaction"),
+                hashErrorString,
+                QMessageBox::Ok, QMessageBox::Ok);
+                anonServers.erase(anonServers.begin()+randIndex);
+                return this->findAnonServer(anonServers);
+            }
+
+
+            QString messageString = QString("Are you sure you want to send these coins through the Nav Anonymous Network? There will be a %1% transaction fee.").arg(txFee);
+
+            QMessageBox::StandardButton reply;
+            reply = QMessageBox::question(this, "Anonymous Transaction", messageString, QMessageBox::Yes|QMessageBox::No);
+
+            if(reply == QMessageBox::Yes){
+                model->setAnonDetails(minAmount, maxAmount, serverAddress);
+                return jsonObject;
+            } else {
+                QJsonDocument jsonDoc =  QJsonDocument::fromJson("{type:\"FAIL\"}");
+                return jsonDoc.object();
             }
         }
     }
@@ -418,20 +444,6 @@ QJsonObject SendCoinsDialog::testEncrypted(QString server, int port, QString enc
 void SendCoinsDialog::on_sendButton_clicked()
 {
 
-//    if (mapMultiArgs["-anonhash"].size() > 0) {
-//        cout << "-anonhash " <<  mapMultiArgs["-anonhash"][0] << endl;
-//        cout << "-anonhash " <<  mapMultiArgs["-anonhash"][1] << endl;
-//        cout << "-anonhash " <<  mapMultiArgs["-anonhash"][2] << endl;
-//    } else {
-//        cout << " no -anonhash " << endl;
-//    }
-
-//    if (vAddedAnonHashes.size() > 0) {
-//        cout << "-vAddedAnonHashes " << vAddedAnonHashes[0] << endl;
-//    } else {
-//         cout << "no -vAddedAnonHashes " << endl;
-//    }
-
     if(!model || !model->getOptionsModel())
         return;
 
@@ -471,6 +483,13 @@ void SendCoinsDialog::on_sendButton_clicked()
     } else {
         model->setAnonSend(true);
         vector<anonServer> anonServers = this->getAnonServers();
+
+        if (mapMultiArgs["-anonhash"].size() < 1 && vAddedAnonHashes.size() < 1) {
+            QMessageBox::warning(this, tr("Anonymous Transaction"),
+            tr("Please enter at least one anonhash to your configuration file or by using the RPC console"),
+            QMessageBox::Ok, QMessageBox::Ok);
+            return;
+        }
 
         QJsonObject response = this->findAnonServer(anonServers);
 
