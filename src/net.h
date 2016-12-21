@@ -126,6 +126,9 @@ extern CCriticalSection cs_vAddedNodes;
 extern std::vector<std::string> vAddedAnonServers;
 extern CCriticalSection cs_vAddedAnonServers;
 
+extern std::vector<std::string> vAddedAnonHashes;
+extern CCriticalSection cs_vAddedAnonHashes;
+
 extern NodeId nLastNodeId;
 extern CCriticalSection cs_nLastNodeId;
 

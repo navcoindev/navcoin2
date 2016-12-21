@@ -157,17 +157,10 @@ Value addanonserver(const Array& params, bool fHelp)
     if (fHelp || params.size() != 2 ||
         (strCommand != "onetry" && strCommand != "add" && strCommand != "remove"))
         throw runtime_error(
-            "addanonserver <anonserver> <add|remove|onetry>\n"
-            "Attempts add or remove <anonserver> from the addanonserver list or try a connection to <node> once.");
+            "addanonserver <anonserver> <add|remove>\n"
+            "Attempts add or remove <anonserver> from the addanonserver list.");
 
     string strNode = params[0].get_str();
-
-    if (strCommand == "onetry")
-    {
-        CAddress addr;
-        ConnectNode(addr, strNode.c_str());
-        return Value::null;
-    }
 
     LOCK(cs_vAddedAnonServers);
     vector<string>::iterator it = vAddedAnonServers.begin();
@@ -178,17 +171,66 @@ Value addanonserver(const Array& params, bool fHelp)
     if (strCommand == "add")
     {
         if (it != vAddedAnonServers.end())
-            throw JSONRPCError(RPC_CLIENT_NODE_ALREADY_ADDED, "Error: Node already added");
+            throw JSONRPCError(RPC_CLIENT_NODE_ALREADY_ADDED, "Error: Anon server already added");
         vAddedAnonServers.push_back(strNode);
     }
     else if(strCommand == "remove")
     {
         if (it == vAddedAnonServers.end())
-            throw JSONRPCError(RPC_CLIENT_NODE_NOT_ADDED, "Error: Node has not been added.");
+            throw JSONRPCError(RPC_CLIENT_NODE_NOT_ADDED, "Error: Anon server has not been added.");
         vAddedAnonServers.erase(it);
     }
 
     return Value::null;
+}
+
+Value anonhash(const Array& params, bool fHelp)
+{
+    string strCommand;
+    if (params.size() == 2)
+        strCommand = params[1].get_str();
+    if (fHelp || params.size() != 2 ||
+        (strCommand != "onetry" && strCommand != "add" && strCommand != "remove"))
+        throw runtime_error(
+            "anonhash <anonhash> <add|remove>\n"
+            "Attempts add or remove <anonhash> from the accepted hashes list.");
+
+    string strNode = params[0].get_str();
+
+
+    LOCK(cs_vAddedAnonHashes);
+    vector<string>::iterator it = vAddedAnonHashes.begin();
+    for(; it != vAddedAnonHashes.end(); it++)
+        if (strNode == *it)
+            break;
+
+    if (strCommand == "add")
+    {
+        if (it != vAddedAnonHashes.end())
+            throw JSONRPCError(RPC_CLIENT_NODE_ALREADY_ADDED, "Error: Hash already added");
+        vAddedAnonHashes.push_back(strNode);
+    }
+    else if(strCommand == "remove")
+    {
+        if (it == vAddedAnonHashes.end())
+            throw JSONRPCError(RPC_CLIENT_NODE_NOT_ADDED, "Error: Hash has not been added.");
+        vAddedAnonHashes.erase(it);
+    }
+
+    return Value::null;
+}
+
+Value getaddedanonhashinfo(bool fHelp)
+{
+
+    Array ret;
+
+    LOCK(cs_vAddedAnonHashes);
+    BOOST_FOREACH(string& strAddNode, vAddedAnonHashes)
+        ret.push_back(strAddNode);
+
+    return ret;
+
 }
 
 Value getaddedanonserverinfo(const Array& params, bool fHelp)

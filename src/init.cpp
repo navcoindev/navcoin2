@@ -192,6 +192,7 @@ std::string HelpMessage()
     strUsage += "  -maxconnections=<n>    " + _("Maintain at most <n> connections to peers (default: 125)") + "\n";
     strUsage += "  -addnode=<ip>          " + _("Add a node to connect to and attempt to keep the connection open") + "\n";
     strUsage += "  -addanonserver=<ip>    " + _("Add an anon node to use for sending anon transactions to") + "\n";
+    strUsage += "  -anonhash=<ip>         " + _("Add the md5 hash of your chosen anon server") + "\n";
     strUsage += "  -connect=<ip>          " + _("Connect only to the specified node(s)") + "\n";
     strUsage += "  -seednode=<ip>         " + _("Connect to a node to retrieve peer addresses, and disconnect") + "\n";
     strUsage += "  -externalip=<ip>       " + _("Specify your own public address") + "\n";

@@ -87,6 +87,9 @@ CCriticalSection cs_vAddedNodes;
 vector<std::string> vAddedAnonServers;
 CCriticalSection cs_vAddedAnonServers;
 
+vector<std::string> vAddedAnonHashes;
+CCriticalSection cs_vAddedAnonHashes;
+
 NodeId nLastNodeId = 0;
 CCriticalSection cs_nLastNodeId;
 

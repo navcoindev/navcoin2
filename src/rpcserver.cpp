@@ -228,6 +228,8 @@ static const CRPCCommand vRPCCommands[] =
     { "getaddednodeinfo",       &getaddednodeinfo,       true,      true,      false },
     { "addanonserver",          &addanonserver,          true,      true,      false },
     { "getaddedanonserverinfo", &getaddedanonserverinfo, true,      true,      false },
+    { "getaddedanonhashinfo",   &getaddedanonhashinfo,   true,      true,      false },
+    { "anonhash",               &anonhash,               true,      true,      false },
     { "ping",                   &ping,                   true,      false,     false },
     { "getnettotals",           &getnettotals,           true,      true,      false },
     { "getdifficulty",          &getdifficulty,          true,      false,     false },
