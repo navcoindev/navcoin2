@@ -220,7 +220,7 @@ Value anonhash(const Array& params, bool fHelp)
     return Value::null;
 }
 
-Value getaddedanonhashinfo(bool fHelp)
+Value getaddedanonhashinfo(const Array& params, bool fHelp)
 {
 
     Array ret;

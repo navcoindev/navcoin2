@@ -10,41 +10,52 @@ Thomas Bernard.
 Mac OS X navcoind build instructions
 Laszlo Hanyecz <solar@heliacal.net>
 Douglas Huff <dhuff@jrbobdobbs.org>
-
+Alex V. <alex@alohechotecho.com>
 
 See readme-qt.rst for instructions on building NavCoin QT, the
 graphical user interface.
 
-Tested on 10.5 and 10.6 intel.  PPC is not supported because it's big-endian.
+Tested on 10.10, 10.11, 10.12 intel.
+PPC is not supported because it's big-endian.
 
-All of the commands should be executed in Terminal.app.. it's in
-/Applications/Utilities
+1) Install Xcode using the App Store:
 
-You need to install XCode with all the options checked so that the compiler and
-everything is available in /usr not just /Developer I think it comes on the DVD
-but you can get the current version from http://developer.apple.com
+	- CMD + <space>
+	- Type 'App Store'
+	- Type 'Xcode' in Search field.
+	- Click 'Install'.
 
+(*) The next steps of the installation process must be run on the Terminal.
+    Press 'CMD + <space>' and type 'Terminal' to launch it.
 
-1.  Clone the github tree to get the source code:
+2) Install command line tools.
 
-git clone git@github.com:navcoindev/navcoin.git navcoin
+	xcode-select --install
 
-2.  Download and install MacPorts from http://www.macports.org/
+   Note: If you see the following text, then the Xcode command line tools are
+         already installed.
 
-2a. (for 10.7 Lion)
-    Edit /opt/local/etc/macports/macports.conf and uncomment "build_arch i386"
+	xcode-select: error: command line tools are already installed, use
+	"Software Update" to install update
 
-3.  Install dependencies from MacPorts
+   Click Install and accept the Command Line Tools License Agreement.
 
-sudo port install boost db48 openssl miniupnpc
+   The Xcode Command Line Tools will then be installed on your system.
 
-Optionally install qrencode (and set USE_QRCODE=1):
-sudo port install qrencode
+3) Clone the github tree to get the source code:
 
-4.  Now you should be able to build navcoind:
+	git clone http://www.github.com/navcoindev/navcoin2
 
-cd navcoin/src
-make -f makefile.osx
+4) Download and install MacPorts from http://www.macports.org/
+
+5) Install dependencies from MacPorts
+
+	sudo /opt/local/bin/port install boost db48 openssl miniupnpc gcc5
+
+6) Now you should be able to build navcoind:
+
+	cd navcoin/src
+	make -f makefile.osx
 
 Run:
   ./navcoind --help  # for a list of command-line options.

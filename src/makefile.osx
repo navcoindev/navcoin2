@@ -5,6 +5,7 @@
 
 # Mac OS X makefile for navcoin
 # Originally by Laszlo Hanyecz (solar@heliacal.net)
+# Modified by Alex V. (alex@alohechotecho.com)
 
 CXX=llvm-g++
 DEPSDIR=/opt/local
@@ -59,7 +60,7 @@ CFLAGS = -g -msse2
 endif
 
 # ppc doesn't work because we don't support big-endian
-CFLAGS += -Wall -Wextra -Wformat -Wno-ignored-qualifiers -Wformat-security -Wno-unused-parameter \
+CFLAGS += -fpermissive -Wall -Wextra -Wformat -Wno-ignored-qualifiers -Wformat-security -Wno-unused-parameter \
     $(DEBUGFLAGS) $(DEFS) $(INCLUDEPATHS)
 
 OBJS= \
@@ -125,7 +126,7 @@ OBJS= \
     obj/groestl.o \
     obj/jh.o \
     obj/keccak.o \
-	obj/fugue.o \
+    obj/fugue.o \
     obj/hamsi.o \
     obj/skein.o
 
@@ -172,6 +173,13 @@ version.cpp: obj/build.h
 DEFS += -DHAVE_BUILD_INFO
 
 obj/%.o: %.cpp
+	$(CXX) -c $(CFLAGS) -MMD -MF $(@:%.o=%.d) -o $@ $<
+	@cp $(@:%.o=%.d) $(@:%.o=%.P); \
+	  sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$//' \
+	      -e '/^$$/ d' -e 's/$$/ :/' < $(@:%.o=%.d) >> $(@:%.o=%.P); \
+	  rm -f $(@:%.o=%.d)
+
+obj/%.o: %.c
 	$(CXX) -c $(CFLAGS) -MMD -MF $(@:%.o=%.d) -o $@ $<
 	@cp $(@:%.o=%.d) $(@:%.o=%.P); \
 	  sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$//' \
