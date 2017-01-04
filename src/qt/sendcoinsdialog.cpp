@@ -63,7 +63,7 @@ SendCoinsDialog::SendCoinsDialog(QWidget *parent) :
     ui->setupUi(this);
 
 #ifdef Q_OS_MAC // Icons on push buttons are very uncommon on Mac
-    ui->addButton->setIcon(QIcon());
+    //ui->addButton->setIcon(QIcon());
     ui->clearButton->setIcon(QIcon());
     ui->sendButton->setIcon(QIcon());
 #endif
@@ -179,7 +179,7 @@ RSA * SendCoinsDialog::createRSA(unsigned char * key,int isPublic)
 
 void SendCoinsDialog::printLastError(char *msg)
 {
-    char * err = malloc(130);;
+    char * err = (char *)malloc(130);
     ERR_load_crypto_strings();
     ERR_error_string(ERR_get_error(), err);
     qDebug() << QString("%1 ERROR: %2\n").arg(msg).arg(err);
@@ -205,7 +205,7 @@ QString SendCoinsDialog::charToString(unsigned char *originalChar){
 
     QString temp;
     QString convertedString = "";
-    int charLength = strlen(originalChar);
+    int charLength = strlen((const char *)originalChar);
 
     for(int i = 0; i < charLength; i++) {
         temp = QChar(originalChar[i]).toAscii();
@@ -228,7 +228,7 @@ QString SendCoinsDialog::encryptAddress(QString userAddress, QString serverPubli
 
     unsigned char encrypted[4098]={};
 
-    int encrypted_length= this->public_encrypt(plainText,strlen(plainText),publicKey,encrypted);
+    int encrypted_length= this->public_encrypt((unsigned char*)plainText,strlen(plainText),(unsigned char*)publicKey,encrypted);
 
     if(encrypted_length == -1)
     {
@@ -238,7 +238,7 @@ QString SendCoinsDialog::encryptAddress(QString userAddress, QString serverPubli
         QString encryptedString = this->charToString(encrypted);
     }
 
-    QByteArray convertedString = QByteArray(encrypted);
+    QByteArray convertedString = QByteArray((const char*)encrypted);
 
     QString encryptedString = convertedString.toBase64();
 
@@ -256,7 +256,7 @@ std::vector<anonServer> SendCoinsDialog::getAnonServers() {
         return returnServers;
     }
 
-    const vector<string>& anonServers = {};
+    vector<string> anonServers;
 
     const vector<string>& confAnonServers = mapMultiArgs["-addanonserver"];
 
