@@ -68,8 +68,6 @@ Notificator::Notificator(const QString &programName, QSystemTrayIcon *trayicon, 
             CFRelease(cfurl);
             CFRelease(bundle);
          }
-        CFRelease(cfurl);
-        CFRelease(bundle);
     }
 #endif
 }
