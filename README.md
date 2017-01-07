@@ -15,6 +15,16 @@ http://www.navcoin.org
 | Port | `44440` |
 | RPC Port | `44444` |
 
+## Navtech Settings
+
+| Specification | Value |
+|:-----------|:-----------|
+| addanonserver | `95.183.52.55:3000` |
+| addanonserver | `95.183.53.184:3000` |
+| addanonserver | `95.183.52.28:3000` |
+| addanonserver | `95.183.52.29:3000` |
+| anonhash | `000c17f28eaa71f48de6d8856fc3a22f` |
+
 ## Social Channels
 
 | Site | link |
@@ -23,7 +33,8 @@ http://www.navcoin.org
 | Facebook | https://www.facebook.com/NAVCoin |
 | Twitter | https://twitter.com/NavCoin |
 | Reddit | http://www.reddit.com/r/navcoin |
-| Slack | https://navcoin.slack.com |
+| Slack | https://navcoin-sign-up.herokuapp.com |
+| Telegram | https://telegram.me/joinchat/COuj0kE7K01APpfZSq3i7Q |
 
 ## Navtech Decentralization
 
