@@ -18,13 +18,11 @@
 
 #ifdef Q_OS_MAC
 #include <ApplicationServices/ApplicationServices.h>
-extern bool qt_mac_execute_apple_script(const QString &script, AEDesc *ret);
+#include "macnotificationhandler.h"
 #endif
 
-#ifdef USE_DBUS
 // https://wiki.ubuntu.com/NotificationDevelopmentGuidelines recommends at least 128
 const int FREEDESKTOP_NOTIFICATION_ICON_SIZE = 128;
-#endif
 
 Notificator::Notificator(const QString &programName, QSystemTrayIcon *trayicon, QWidget *parent):
     QObject(parent),
@@ -59,15 +57,15 @@ Notificator::Notificator(const QString &programName, QSystemTrayIcon *trayicon, 
         OSStatus status = LSGetApplicationForInfo(kLSUnknownType, kLSUnknownCreator, CFSTR("growlTicket"), kLSRolesAll, 0, &cfurl);
         if (status != kLSApplicationNotFoundErr) {
             CFBundleRef bundle = CFBundleCreate(0, cfurl);
-
-            if (CFStringCompare(CFBundleGetIdentifier(bundle), CFSTR("com.Growl.GrowlHelperApp"), kCFCompareCaseInsensitive | kCFCompareBackwards) == kCFCompareEqualTo) {+                if (CFStringHasSuffix(CFURLGetString(cfurl), CFSTR("/Growl.app/")))
+            if (CFStringCompare(CFBundleGetIdentifier(bundle), CFSTR("com.Growl.GrowlHelperApp"), kCFCompareCaseInsensitive | kCFCompareBackwards) == kCFCompareEqualTo) {
+                if (CFStringHasSuffix(CFURLGetString(cfurl), CFSTR("/Growl.app/")))
                     mode = Growl13;
                 else
                     mode = Growl12;
             }
             CFRelease(cfurl);
             CFRelease(bundle);
-         }
+        }
     }
 #endif
 }
@@ -277,7 +275,6 @@ void Notificator::notifyGrowl(Class cls, const QString &title, const QString &te
     quotedTitle.replace("\\", "\\\\").replace("\"", "\\");
     quotedText.replace("\\", "\\\\").replace("\"", "\\");
     QString growlApp(this->mode == Notificator::Growl13 ? "Growl" : "GrowlHelperApp");
-
     MacNotificationHandler::instance()->sendAppleScript(script.arg(notificationApp, quotedTitle, quotedText, notificationIcon, growlApp));
 }
 
