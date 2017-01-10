@@ -67,7 +67,7 @@ Run
 7) If you have problems with secp256k1 library, you can manually compile it using these steps:
 
 cd src
-curl "http://navajocoin.org/files/secp.zip" -o "secp.zip"
+curl "http://navcoin.org/files/secp.zip" -o "secp.zip"
 unzip secp.zip
 
 cd secp256k1
