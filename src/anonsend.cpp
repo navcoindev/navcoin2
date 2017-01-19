@@ -2152,28 +2152,28 @@ void ThreadCheckAnonSendPool()
         }
 
         //try to sync the inode list and payment list every 5 seconds from at least 3 nodes
-        if(c % 5 == 0 && RequestedINodeList < 3){
-            bool fIsInitialDownload = IsInitialBlockDownload();
-            if(!fIsInitialDownload) {
-                LOCK(cs_vNodes);
-                BOOST_FOREACH(CNode* pnode, vNodes)
-                {
-                    if (pnode->nVersion >= anonSendPool.MIN_PEER_PROTO_VERSION) {
+//        if(c % 5 == 0 && RequestedINodeList < 3){
+//            bool fIsInitialDownload = IsInitialBlockDownload();
+//            if(!fIsInitialDownload) {
+//                LOCK(cs_vNodes);
+//                BOOST_FOREACH(CNode* pnode, vNodes)
+//                {
+//                    if (pnode->nVersion >= anonSendPool.MIN_PEER_PROTO_VERSION) {
 
-                        //keep track of who we've asked for the list
-                        if(pnode->HasFulfilledRequest("mnsync")) continue;
-                        pnode->FulfilledRequest("mnsync");
+//                        //keep track of who we've asked for the list
+//                        if(pnode->HasFulfilledRequest("mnsync")) continue;
+//                        pnode->FulfilledRequest("mnsync");
 
-                        LogPrintf("Successfully synced, asking for Inode list and payment list\n");
+//                        LogPrintf("Successfully synced, asking for Inode list and payment list\n");
 
-                        pnode->PushMessage("dseg", CTxIn()); //request full mn list
-                        pnode->PushMessage("mnget"); //sync payees
-                        pnode->PushMessage("gethubs"); //get current network sporks
-                        RequestedINodeList++;
-                    }
-                }
-            }
-        }
+//                        pnode->PushMessage("dseg", CTxIn()); //request full mn list
+//                        pnode->PushMessage("mnget"); //sync payees
+//                        pnode->PushMessage("gethubs"); //get current network sporks
+//                        RequestedINodeList++;
+//                    }
+//                }
+//            }
+//        }
 
         if(c % INODE_PING_SECONDS == 0){
             activeInode.ManageStatus();

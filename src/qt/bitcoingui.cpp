@@ -570,7 +570,7 @@ void BitcoinGUI::setClientModel(ClientModel *clientModel)
         connect(clientModel, SIGNAL(message(QString,QString,bool,unsigned int)), this, SLOT(message(QString,QString,bool,unsigned int)));
 
         // Show progress dialog
-        connect(clientModel, SIGNAL(showProgress(QString,int)), this, SLOT(showProgress(QString,int)));
+        // connect(clientModel, SIGNAL(showProgress(QString,int)), this, SLOT(showProgress(QString,int)));
         connect(walletModel, SIGNAL(showProgress(QString,int)), this, SLOT(showProgress(QString,int)));
 
         overviewPage->setClientModel(clientModel);

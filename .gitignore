@@ -10,3 +10,4 @@ qrc_bitcoin.cpp
 src/qt/locale/*
 /src/secp256k1/
 /src/secp256k1/*
+/NavCoin-Qt.app
