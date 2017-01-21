@@ -24,7 +24,7 @@ extern void TxToJSON(const CTransaction& tx, const uint256 hashBlock, json_spiri
 static void accountingDeprecationCheck()
 {
     if (!GetBoolArg("-enableaccounts", false))
-        throw runtime_error(
+        throw runtime_error(s
             "Accounting API is deprecated and will be removed in future.\n"
             "It can easily result in negative or odd balances if misused or misunderstood, which has happened in the field.\n"
             "If you still want to enable it, add to your config file enableaccounts=1\n");
@@ -262,7 +262,7 @@ Value getaddressesbyaccount(const Array& params, bool fHelp)
 
 Value sendtoaddress(const Array& params, bool fHelp)
 {
-    if (fHelp || params.size() < 2 || params.size() > 5)
+    if (fHelp || params.size() < 2 || params.size() > 6)
         throw runtime_error(
             "sendtoaddress <navcoinaddress> <amount> [comment] [comment-to] [narration] [anon-destination]\n"
             "<amount> is a real and is rounded to the nearest 0.000001"
