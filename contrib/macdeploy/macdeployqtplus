@@ -252,7 +252,7 @@ def copyFramework(framework, path, verbose):
         fromPath = framework.sourceFilePath
 
     if framework.sourceFilePath.startswith("@rpath"):
-	fromPath = os.getenv("QTDIR", None) + fromPath.split("@rpath")[1]
+	fromPath = os.getenv("QTDIR", None) + "/lib/" + fromPath.split("@rpath")[1]
 
     toDir = os.path.join(path, framework.destinationDirectory)
     toPath = os.path.join(toDir, framework.binaryName)
