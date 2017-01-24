@@ -202,7 +202,7 @@ def getFrameworks(binaryPath, verbose):
         if verbose >= 1:
             sys.stderr.write(o_stderr)
             sys.stderr.flush()
-            raise RuntimeError("otool failed with return code %d" % otool.returncode)
+            #raise RuntimeError("otool failed with return code %d" % otool.returncode)
     
     otoolLines = o_stdout.split("\n")
     otoolLines.pop(0) # First line is the inspected binary
@@ -250,6 +250,9 @@ def copyFramework(framework, path, verbose):
         fromPath = "/Library/Frameworks/" + framework.sourceFilePath
     else:
         fromPath = framework.sourceFilePath
+
+    if framework.sourceFilePath.startswith("@rpath"):
+	fromPath = os.getenv("QTDIR", None) + fromPath.split("@rpath")[1]
 
     toDir = os.path.join(path, framework.destinationDirectory)
     toPath = os.path.join(toDir, framework.binaryName)
