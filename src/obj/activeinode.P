@@ -1,0 +1,20 @@
+obj/activeinode.o: activeinode.cpp protocol.h chainparams.h bignum.h \
+ serialize.h allocators.h version.h clientversion.h uint256.h util.h \
+ tinyformat.h netbase.h compat.h activeinode.h sync.h threadsafety.h \
+ net.h mruset.h addrman.h timedata.h hash.h crypto/ripemd160.h \
+ crypto/sha256.h core.h script.h keystore.h key.h secret.h main.h \
+ txmempool.h scrypt.h hashblock.h sph_blake.h sph_types.h sph_bmw.h \
+ sph_groestl.h sph_jh.h sph_keccak.h sph_skein.h sph_luffa.h \
+ sph_cubehash.h sph_shavite.h sph_simd.h sph_echo.h sph_hamsi.h \
+ sph_fugue.h init.h wallet.h walletdb.h db.h crypter.h ui_interface.h \
+ anonsend.h inode.h base58.h
+activeinode.cpp protocol.h chainparams.h bignum.h :
+ serialize.h allocators.h version.h clientversion.h uint256.h util.h :
+ tinyformat.h netbase.h compat.h activeinode.h sync.h threadsafety.h :
+ net.h mruset.h addrman.h timedata.h hash.h crypto/ripemd160.h :
+ crypto/sha256.h core.h script.h keystore.h key.h secret.h main.h :
+ txmempool.h scrypt.h hashblock.h sph_blake.h sph_types.h sph_bmw.h :
+ sph_groestl.h sph_jh.h sph_keccak.h sph_skein.h sph_luffa.h :
+ sph_cubehash.h sph_shavite.h sph_simd.h sph_echo.h sph_hamsi.h :
+ sph_fugue.h init.h wallet.h walletdb.h db.h crypter.h ui_interface.h :
+ anonsend.h inode.h base58.h :

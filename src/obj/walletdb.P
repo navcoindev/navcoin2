@@ -1,0 +1,18 @@
+obj/walletdb.o: walletdb.cpp walletdb.h db.h serialize.h allocators.h \
+ version.h clientversion.h sync.h threadsafety.h key.h uint256.h hash.h \
+ crypto/ripemd160.h crypto/sha256.h secret.h util.h tinyformat.h base58.h \
+ chainparams.h bignum.h script.h keystore.h protocol.h netbase.h compat.h \
+ wallet.h crypter.h main.h core.h txmempool.h net.h mruset.h addrman.h \
+ timedata.h scrypt.h hashblock.h sph_blake.h sph_types.h sph_bmw.h \
+ sph_groestl.h sph_jh.h sph_keccak.h sph_skein.h sph_luffa.h \
+ sph_cubehash.h sph_shavite.h sph_simd.h sph_echo.h sph_hamsi.h \
+ sph_fugue.h ui_interface.h
+walletdb.cpp walletdb.h db.h serialize.h allocators.h :
+ version.h clientversion.h sync.h threadsafety.h key.h uint256.h hash.h :
+ crypto/ripemd160.h crypto/sha256.h secret.h util.h tinyformat.h base58.h :
+ chainparams.h bignum.h script.h keystore.h protocol.h netbase.h compat.h :
+ wallet.h crypter.h main.h core.h txmempool.h net.h mruset.h addrman.h :
+ timedata.h scrypt.h hashblock.h sph_blake.h sph_types.h sph_bmw.h :
+ sph_groestl.h sph_jh.h sph_keccak.h sph_skein.h sph_luffa.h :
+ sph_cubehash.h sph_shavite.h sph_simd.h sph_echo.h sph_hamsi.h :
+ sph_fugue.h ui_interface.h :

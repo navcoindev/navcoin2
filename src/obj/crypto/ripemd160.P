@@ -1,0 +1,6 @@
+obj/crypto/ripemd160.o: crypto/ripemd160.cpp \
+ /home/craig/projects/navcoin2/src/crypto/ripemd160.h \
+ /home/craig/projects/navcoin2/src/crypto/common.h
+crypto/ripemd160.cpp :
+ /home/craig/projects/navcoin2/src/crypto/ripemd160.h :
+ /home/craig/projects/navcoin2/src/crypto/common.h :

@@ -1,0 +1,30 @@
+obj/checkpoints.o: checkpoints.cpp checkpoints.h net.h mruset.h netbase.h \
+ serialize.h allocators.h version.h clientversion.h compat.h protocol.h \
+ chainparams.h bignum.h uint256.h util.h tinyformat.h addrman.h sync.h \
+ threadsafety.h timedata.h hash.h crypto/ripemd160.h crypto/sha256.h \
+ core.h script.h keystore.h key.h secret.h txdb.h txdb-leveldb.h main.h \
+ txmempool.h scrypt.h hashblock.h sph_blake.h sph_types.h sph_bmw.h \
+ sph_groestl.h sph_jh.h sph_keccak.h sph_skein.h sph_luffa.h \
+ sph_cubehash.h sph_shavite.h sph_simd.h sph_echo.h sph_hamsi.h \
+ sph_fugue.h \
+ /home/craig/projects/navcoin2/src/leveldb/include/leveldb/db.h \
+ /home/craig/projects/navcoin2/src/leveldb/include/leveldb/iterator.h \
+ /home/craig/projects/navcoin2/src/leveldb/include/leveldb/slice.h \
+ /home/craig/projects/navcoin2/src/leveldb/include/leveldb/status.h \
+ /home/craig/projects/navcoin2/src/leveldb/include/leveldb/options.h \
+ /home/craig/projects/navcoin2/src/leveldb/include/leveldb/write_batch.h
+checkpoints.cpp checkpoints.h net.h mruset.h netbase.h :
+ serialize.h allocators.h version.h clientversion.h compat.h protocol.h :
+ chainparams.h bignum.h uint256.h util.h tinyformat.h addrman.h sync.h :
+ threadsafety.h timedata.h hash.h crypto/ripemd160.h crypto/sha256.h :
+ core.h script.h keystore.h key.h secret.h txdb.h txdb-leveldb.h main.h :
+ txmempool.h scrypt.h hashblock.h sph_blake.h sph_types.h sph_bmw.h :
+ sph_groestl.h sph_jh.h sph_keccak.h sph_skein.h sph_luffa.h :
+ sph_cubehash.h sph_shavite.h sph_simd.h sph_echo.h sph_hamsi.h :
+ sph_fugue.h :
+ /home/craig/projects/navcoin2/src/leveldb/include/leveldb/db.h :
+ /home/craig/projects/navcoin2/src/leveldb/include/leveldb/iterator.h :
+ /home/craig/projects/navcoin2/src/leveldb/include/leveldb/slice.h :
+ /home/craig/projects/navcoin2/src/leveldb/include/leveldb/status.h :
+ /home/craig/projects/navcoin2/src/leveldb/include/leveldb/options.h :
+ /home/craig/projects/navcoin2/src/leveldb/include/leveldb/write_batch.h :

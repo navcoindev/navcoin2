@@ -1,0 +1,10 @@
+obj/inodeconfig.o: inodeconfig.cpp net.h mruset.h netbase.h serialize.h \
+ allocators.h version.h clientversion.h compat.h protocol.h chainparams.h \
+ bignum.h uint256.h util.h tinyformat.h addrman.h sync.h threadsafety.h \
+ timedata.h hash.h crypto/ripemd160.h crypto/sha256.h core.h script.h \
+ keystore.h key.h secret.h inodeconfig.h
+inodeconfig.cpp net.h mruset.h netbase.h serialize.h :
+ allocators.h version.h clientversion.h compat.h protocol.h chainparams.h :
+ bignum.h uint256.h util.h tinyformat.h addrman.h sync.h threadsafety.h :
+ timedata.h hash.h crypto/ripemd160.h crypto/sha256.h core.h script.h :
+ keystore.h key.h secret.h inodeconfig.h :
